@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OBDPractice</string>
+    <string name="edit_message">Enter a message</string>
+    
+    <!-- Basic Button Titles - Not used (yet) -->
+    <string name="button_setup_network">Network</string>
+    <string name="button_start_logging">Logging</string>
+    <string name="button_gryphon_monitor">Monitor</string>
+    <string name="button_connect_cloud">Cloud</string>
+    <string name="button_view_logs">Logs</string>
+    
+    <!-- Activity Titles -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="title_activity_network_setup">NetworkSetupActivity</string>
+    
+    <!-- Menu Strings -->
+    <string name="menu_settings">Settings</string>
+    
+    <!-- Strings for Main Activity Buttons -->
+    <string name="setup_network">Setup the Network Connection</string>
+    <string name="start_logging">Start Logging Gryphon Output</string>
+    <string name="gryphon_monitor">Monitor Gryphon Output</string>
+    <string name="connect_cloud">Connect to the Cloud</string>
+    <string name="view_logs">View Stored Gryphon Logs</string>
+    
+    <!-- Default Hello World Text -->
+    <string name="hello_world">Hello world!</string>
+    
+    <!-- Network Setup Screen Strings -->
+    <string name="ip_address">Enter the IP Address of the Gryphon</string>
+
+</resources>
