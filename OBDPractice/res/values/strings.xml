@@ -20,7 +20,7 @@
     <string name="menu_settings">Settings</string>
     
     <!-- Strings for Main Activity Buttons -->
-    <string name="setup_network">Setup the Network Connection</string>
+    <string name="setup_network">Setup Gryphon Network Connection</string>
     <string name="start_logging">Start Logging Gryphon Output</string>
     <string name="gryphon_monitor">Monitor Gryphon Output</string>
     <string name="connect_cloud">Connect to the Cloud</string>
