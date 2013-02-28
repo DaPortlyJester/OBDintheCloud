@@ -14,8 +14,10 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int menu_settings=0x7f070001;
-        public static final int textView1=0x7f070000;
+        public static final int fileText=0x7f070002;
+        public static final int ipAddress=0x7f070000;
+        public static final int menu_settings=0x7f070003;
+        public static final int networkIP=0x7f070001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -36,13 +38,15 @@ public final class R {
         public static final int button_view_logs=0x7f040006;
         public static final int connect_cloud=0x7f04000e;
         public static final int edit_message=0x7f040001;
+        /**  Network Setup Screen Strings 
+         */
+        public static final int enter_ip_adress=0x7f040011;
+        public static final int gryphon_log_filename=0x7f040013;
         public static final int gryphon_monitor=0x7f04000d;
         /**  Default Hello World Text 
          */
         public static final int hello_world=0x7f040010;
-        /**  Network Setup Screen Strings 
-         */
-        public static final int ip_address=0x7f040011;
+        public static final int ip_address=0x7f040012;
         /**  Menu Strings 
          */
         public static final int menu_settings=0x7f04000a;

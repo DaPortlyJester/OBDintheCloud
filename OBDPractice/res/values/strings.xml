@@ -30,6 +30,8 @@
     <string name="hello_world">Hello world!</string>
     
     <!-- Network Setup Screen Strings -->
-    <string name="ip_address">Enter the IP Address of the Gryphon</string>
+    <string name="enter_ip_adress">Enter the IP Address of the Gryphon</string>
+    <string name="ip_address">192.168.0.112</string>
+    <string name="gryphon_log_filename">Name of File </string>
 
 </resources>

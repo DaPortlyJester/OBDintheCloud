@@ -3,23 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NetworkSetupActivity" >
-
+<!--  
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/hello_world" />
-
+-->
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/ipAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/ip_address" 
-    />
+        android:layout_marginTop="21dp"
+        android:text="@string/enter_ip_adress" />
+
+    <EditText
+        android:id="@+id/networkIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ipAddress"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="@string/ip_address" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/fileText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/networkIP"
+        android:text="@string/gryphon_log_filename" />
 
 </RelativeLayout>

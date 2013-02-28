@@ -29,8 +29,6 @@ public class DisplayMessageActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
-
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
