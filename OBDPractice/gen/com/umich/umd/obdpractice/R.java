@@ -47,6 +47,7 @@ public final class R {
          */
         public static final int hello_world=0x7f040010;
         public static final int ip_address=0x7f040012;
+        public static final int list_button=0x7f040014;
         /**  Menu Strings 
          */
         public static final int menu_settings=0x7f04000a;

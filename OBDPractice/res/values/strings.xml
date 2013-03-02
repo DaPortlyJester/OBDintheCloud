@@ -33,5 +33,6 @@
     <string name="enter_ip_adress">Enter the IP Address of the Gryphon</string>
     <string name="ip_address">192.168.0.112</string>
     <string name="gryphon_log_filename">Name of File </string>
+    <string name="list_button">Click To List Gryphon Files</string>
 
 </resources>
