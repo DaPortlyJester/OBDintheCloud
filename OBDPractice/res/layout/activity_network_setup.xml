@@ -20,25 +20,38 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/ipAddress"
         android:ems="10"
-        android:inputType="phone"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
         android:text="@string/ip_address" >
+
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/fileText"
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/networkIP"
-        android:text="@string/gryphon_log_filename" />
+        android:layout_below="@+id/fileText"
+        android:onClick="pickLogFile"
+        android:text="@string/list_button" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/fileText"
-        android:onClick="connectToGryphon"
-        android:text="@string/list_button" />
+        android:layout_below="@+id/button1"
+        android:onClick="downloadFile"
+        android:text="@string/download_button" />
+
+    <TextView
+        android:id="@+id/fileText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/networkIP"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="@string/gryphon_log_filename"
+        android:textSize="20sp" />
 
 </RelativeLayout>
