@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +25,13 @@ import android.support.v4.app.NavUtils;
 
 public class NetworkSetupActivity extends Activity{
 	
-//	private static final String DEBUG_TAG="NetworkConnect";
-	private static final String GRYPH_IP="http://192.168.0.112/";
-	private static final String LIST_LOG_FILE_SCRIPT="/sysadmin/playback_action.php";
-	private static final String DOWNLOAD_LOG_FILE_SCRIPT="/sysadmin/log_action.php";
-	private static final String LIST_LOGS_PARAMS="?verb=list&uploaddir=/data/&extension=.log";
-	private static final String DOWNLOAD_LOG_PARAMS="?uploaddir=/data/&extension=.log&type=ascii&verb=Download&name=";
+	private static final String DEBUG_TAG="NetworkConnect";
+	private static final String GRYPH_IP = "http://192.168.0.112/";
+	private static final String LIST_LOG_FILE_SCRIPT = "/sysadmin/playback_action.php";
+	private static final String DOWNLOAD_LOG_FILE_SCRIPT = "/sysadmin/log_action.php";
+	private static final String LIST_LOGS_PARAMS = "?verb=list&uploaddir=/data/&extension=.log";
+	private static final String DOWNLOAD_LOG_PARAMS = "?uploaddir=/data/&extension=.log&type=ascii&&name=";
+	private static final String DOWNLOAD_VERB = "&verb=Download";
 	private final static String TAG_JSON_OUTPUT = "json_string";
 	
 	private final static String USERNAME = "sysadmin";
@@ -133,7 +135,7 @@ public class NetworkSetupActivity extends Activity{
 				};
 				if(count > 19)
 				{
-					//readText.setText("stream never produced bytes");
+					Log.e(DEBUG_TAG,"HttpConnection stream didn't become available");
 					finish();
 				}
 				BufferedReader buffer = new BufferedReader ( new InputStreamReader(stream));
@@ -147,10 +149,10 @@ public class NetworkSetupActivity extends Activity{
 			}
 			catch(NullPointerException ex)
 			{
-				readText.setText("NullPointerException");
+				Log.e(DEBUG_TAG, "NullPointer found in BufferedReader", ex);
 				ex.printStackTrace();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				Log.d(DEBUG_TAG, "Wait in getOutputFromURL Interrupted", e);
 				e.printStackTrace();
 			}
 			return output.toString();
@@ -227,7 +229,7 @@ public class NetworkSetupActivity extends Activity{
 		if(log_file_picked)
 		{
 			CURRENT_REQUEST = DOWNLOAD_FILE_REQUEST;
-			String downloadLogURLString = GRYPH_IP+DOWNLOAD_LOG_FILE_SCRIPT+DOWNLOAD_LOG_PARAMS+curr_log_file_base_name;
+			String downloadLogURLString = GRYPH_IP+DOWNLOAD_LOG_FILE_SCRIPT+DOWNLOAD_LOG_PARAMS+curr_log_file_base_name+DOWNLOAD_VERB;
 			readText.setText(downloadLogURLString);
 			GetXMLTask task = new GetXMLTask();
 			task.execute(new String [] {downloadLogURLString});
