@@ -1,16 +1,24 @@
 package com.umich.umd.obdpractice;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
 import android.util.Log;
@@ -25,14 +33,17 @@ import android.support.v4.app.NavUtils;
 
 public class NetworkSetupActivity extends Activity{
 	
-	private static final String DEBUG_TAG="NetworkConnect";
-	private static final String GRYPH_IP = "http://192.168.0.112/";
+	private static final String DEBUG_TAG = "NetworkConnect";
+	private static final String SCHEME_TYPE = "http";
+	private static final String GRYPH_IP = "http://192.168.0.112";
 	private static final String LIST_LOG_FILE_SCRIPT = "/sysadmin/playback_action.php";
 	private static final String DOWNLOAD_LOG_FILE_SCRIPT = "/sysadmin/log_action.php";
 	private static final String LIST_LOGS_PARAMS = "?verb=list&uploaddir=/data/&extension=.log";
-	private static final String DOWNLOAD_LOG_PARAMS = "?uploaddir=/data/&extension=.log&type=ascii&&name=";
+	private static final String DOWNLOAD_LOG_PARAMS = "?uploaddir=/data/&extension=.log&type=ascii&name=";
 	private static final String DOWNLOAD_VERB = "&verb=Download";
 	private final static String TAG_JSON_OUTPUT = "json_string";
+	
+	private final static String DOWNLOADED_LOG_FILES = "downloaded_logs";
 	
 	private final static String USERNAME = "sysadmin";
 	private final static String PASSWORD = "dggryphon";
@@ -44,6 +55,8 @@ public class NetworkSetupActivity extends Activity{
 	private boolean log_file_picked = false;
 	private static String curr_log_file_base_name = null;
 	private static String last_log_file_base_name = null;
+	
+	private boolean accessAuthenticated = false;
 	
 	private TextView readText;
 
@@ -124,12 +137,22 @@ public class NetworkSetupActivity extends Activity{
 		
 		protected String getOutputFromUrl(String url)
 		{
+			Log.d(DEBUG_TAG,"Attempting to instantiate StringBuffer");
 			StringBuffer output = new StringBuffer("");
+			Log.d(DEBUG_TAG,"StringBufferIn");
 			try
 			{
+				Log.d(DEBUG_TAG,"Trying Input Stream");
 				InputStream stream = getHttpConnection(url);
+				Log.d(DEBUG_TAG,"InputStream successful");
 				int count = 0;
-				while(stream.available()!=0 && count < 20){ 
+				
+				Log.d(DEBUG_TAG,"Trying stream availability check.");
+				int streamState = stream.available();
+				Log.d(DEBUG_TAG,"Stream check successful.");
+				
+				while(stream.available()!=0 && count < 20){
+					Log.d(DEBUG_TAG,"Stream not available. Waiting");
 					this.wait(100);
 					count+=1;
 				};
@@ -138,8 +161,11 @@ public class NetworkSetupActivity extends Activity{
 					Log.e(DEBUG_TAG,"HttpConnection stream didn't become available");
 					finish();
 				}
+				Log.d(DEBUG_TAG,"Preparing to initiate BufferedReader");
 				BufferedReader buffer = new BufferedReader ( new InputStreamReader(stream));
+				Log.d(DEBUG_TAG,"BufferedReader instantiated");
 				String s = "";
+				
 				while((s = buffer.readLine()) != null)
 					output.append(s);
 			}
@@ -177,24 +203,39 @@ public class NetworkSetupActivity extends Activity{
 	        //encoding = new sun.misc.BASE64Encoder().encode(userPassword.getBytes());
 			
 			try {
+				
+				// Use built in functions of url to convert url string to html encoded version
 				url = new URL(urlString);
+				URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				url = uri.toURL();
+				
+				Log.d(DEBUG_TAG,"The current URL is: " + url.toString());
 				// Open HttpURLConnection
 				httpConnection = (HttpURLConnection) url.openConnection();
 				// Append authorization string to HTTP request header
-				httpConnection.setRequestProperty("Authorization", "Basic " + encoding);
+				if(!accessAuthenticated) {
+					httpConnection.setRequestProperty("Authorization", "Basic " + encoding);
+					//accessAuthenticated = true;
+				}
 				
 				/*
 				 * From open Tutorials example, using DGTech solution
 				httpConnection.setRequestMethod("GET");
 				httpConnection.connect();
 				*/
+				
 				if(httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK)
 				{
+					Log.d(DEBUG_TAG,"HttpURLConnection: HTTP_OK");
 					stream = httpConnection.getInputStream();
+					Log.d(DEBUG_TAG,"Stream for httpConnection set");
 				}
-				//httpConnection.disconnect();
 			} catch (MalformedURLException ex) {
+				Log.e(DEBUG_TAG, "Malformed URL", ex);
 				ex.printStackTrace();
+			} catch (URISyntaxException e) {
+				Log.e(DEBUG_TAG, "URI to URL convetsion failed", e);
+				e.printStackTrace();
 			}
 			
 			return stream;
@@ -208,10 +249,20 @@ public class NetworkSetupActivity extends Activity{
 				Intent filesListIntent = new Intent(getApplicationContext(), LogFilesList.class);
 				filesListIntent.putExtra(TAG_JSON_OUTPUT, output);
 				startActivityForResult(filesListIntent,PICK_FILE_REQUEST);
-	
-				// readText.setText(output);
 			} else {
-				readText.setText(output);
+				try {
+					writeToFile(output);
+					FileOutputStream dlLogFile = openFileOutput(curr_log_file_base_name + ".txt",Context.MODE_PRIVATE);
+					dlLogFile.write(output.getBytes());
+					dlLogFile.close();
+					readText.setText("File download successful: "+ curr_log_file_base_name);
+					writeToFile(curr_log_file_base_name,DOWNLOADED_LOG_FILES);
+					last_log_file_base_name = curr_log_file_base_name;
+					curr_log_file_base_name = null;
+				}catch (Exception e) {
+					Log.e(DEBUG_TAG, "Error while saving log to file", e);
+				}
+				
 			}
 		}
 	}
@@ -220,6 +271,7 @@ public class NetworkSetupActivity extends Activity{
 		
 		CURRENT_REQUEST = PICK_FILE_REQUEST;
 		String listLogsURLString = GRYPH_IP+LIST_LOG_FILE_SCRIPT+LIST_LOGS_PARAMS;
+		Log.d(DEBUG_TAG, "The list log URL is:" + listLogsURLString);
 		GetXMLTask task = new GetXMLTask();
 		task.execute(new String [] {listLogsURLString});
 	}
@@ -230,11 +282,10 @@ public class NetworkSetupActivity extends Activity{
 		{
 			CURRENT_REQUEST = DOWNLOAD_FILE_REQUEST;
 			String downloadLogURLString = GRYPH_IP+DOWNLOAD_LOG_FILE_SCRIPT+DOWNLOAD_LOG_PARAMS+curr_log_file_base_name+DOWNLOAD_VERB;
+			Log.d(DEBUG_TAG, "The download URL is:" + downloadLogURLString);
 			readText.setText(downloadLogURLString);
 			GetXMLTask task = new GetXMLTask();
 			task.execute(new String [] {downloadLogURLString});
-			last_log_file_base_name = curr_log_file_base_name;
-			curr_log_file_base_name = null;
 			log_file_picked = false;
 		} else {
 			readText.setText("No File Picked. Please Choose a Log File First");
@@ -254,4 +305,26 @@ public class NetworkSetupActivity extends Activity{
             }
         }
     }
+	
+	private void writeToFile(String data) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(curr_log_file_base_name, Context.MODE_WORLD_READABLE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e(DEBUG_TAG, "File write failed: " + e.toString());
+        }
+	}
+	
+	private void writeToFile(String data, String filename) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(filename, Context.MODE_WORLD_READABLE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e(DEBUG_TAG, "File write failed: " + e.toString());
+        }
+	}
 }

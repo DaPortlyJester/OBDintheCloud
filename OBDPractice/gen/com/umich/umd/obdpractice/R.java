@@ -24,12 +24,14 @@ public final class R {
         public static final int activity_log_files_list=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_network_setup=0x7f030002;
-        public static final int list_item=0x7f030003;
+        public static final int activity_view_stored_logs=0x7f030003;
+        public static final int list_item=0x7f030004;
     }
     public static final class menu {
         public static final int activity_log_files_list=0x7f060000;
         public static final int activity_main=0x7f060001;
         public static final int activity_network_setup=0x7f060002;
+        public static final int activity_view_stored_logs=0x7f060003;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
@@ -66,6 +68,7 @@ public final class R {
          */
         public static final int title_activity_main=0x7f040007;
         public static final int title_activity_network_setup=0x7f040009;
+        public static final int title_activity_view_stored_logs=0x7f040017;
         public static final int view_logs=0x7f04000f;
     }
     public static final class style {

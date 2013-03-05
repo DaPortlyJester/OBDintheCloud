@@ -48,6 +48,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
         </activity>
+        <activity
+            android:name="com.umich.umd.obdpractice.ViewStoredLogs"
+            android:label="@string/title_activity_view_stored_logs"
+            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.umich.umd.obdpractice.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.umich.umd.obdpractice.ViewStoredLogsActivity"
+            android:label="@string/title_activity_view_stored_logs"
+            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.umich.umd.obdpractice.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

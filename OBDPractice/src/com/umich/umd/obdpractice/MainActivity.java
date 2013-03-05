@@ -58,6 +58,8 @@ public class MainActivity extends Activity {
     
     public void viewStorage(View view)
     {
+    	Intent intent = new Intent(this,ViewStoredLogsActivity.class);
+    	startActivity(intent);
     	
     }
     

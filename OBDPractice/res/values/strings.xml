@@ -36,5 +36,6 @@
     <string name="list_button">Click To List Gryphon Files</string>
     <string name="download_button">Click to Download Selected File</string>
     <string name="title_activity_log_files_list">LogFilesList</string>
+    <string name="title_activity_view_stored_logs">ViewStoredLogs</string>
 
 </resources>
