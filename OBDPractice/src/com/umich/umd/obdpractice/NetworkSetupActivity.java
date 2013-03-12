@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import android.support.v4.app.NavUtils;
 
 public class NetworkSetupActivity extends Activity{
 	
+	
+	/**************************** Network Setup Activity Variables *************************/
 	private static final String DEBUG_TAG = "NetworkConnect";
 	private static final String SCHEME_TYPE = "http";
 	private static final String GRYPH_IP = "http://192.168.0.112";
@@ -59,6 +62,35 @@ public class NetworkSetupActivity extends Activity{
 	private boolean accessAuthenticated = false;
 	
 	private TextView readText;
+	/************************* End of Network Setup Activity Variables ********************/
+	
+	/************************* File Parsing Variables **************************************/
+	
+	BufferedReader reader;
+	//InputStream input;
+	String line;
+	int lineInt;
+	String date = null;
+	int length;
+	int vehSpd_int;
+	float vehSpd_flt;
+	int eng_cool_temp_int;
+	float eng_cool_temp_flt;
+	int fuel_flow_int;
+	float fuel_flow_flt;
+	String vehSpd_str;
+	String eng_cool_temp_str;
+	String fuel_flow_str;
+	
+	ArrayList<Integer>CAN_VEH_SPD=new ArrayList<Integer>();
+	ArrayList<Integer>CAN_ENG_COOL_TEMP = new ArrayList<Integer>();
+	ArrayList<Float>CAN_FUEL_FLOW = new ArrayList<Float>();
+	
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	
+	/************************** End of Log File Parsing Variables **************************/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -251,11 +283,13 @@ public class NetworkSetupActivity extends Activity{
 				startActivityForResult(filesListIntent,PICK_FILE_REQUEST);
 			} else {
 				try {
+					readText.setText("");
+					parseLogFile(output);
 					writeToFile(output);
 					FileOutputStream dlLogFile = openFileOutput(curr_log_file_base_name + ".txt",Context.MODE_PRIVATE);
 					dlLogFile.write(output.getBytes());
 					dlLogFile.close();
-					readText.setText("File download successful: "+ curr_log_file_base_name);
+					//readText.setText("File download successful: "+ curr_log_file_base_name);
 					writeToFile(curr_log_file_base_name,DOWNLOADED_LOG_FILES);
 					last_log_file_base_name = curr_log_file_base_name;
 					curr_log_file_base_name = null;
@@ -327,4 +361,96 @@ public class NetworkSetupActivity extends Activity{
             Log.e(DEBUG_TAG, "File write failed: " + e.toString());
         }
 	}
+	
+	private void parseLogFile(String data) {
+		
+		FileOutputStream fos = null;
+		InputStream fis = null;
+		try {
+			//input = getAssets().open("test5.txt");
+			fos = openFileOutput("Output.txt", Context.MODE_PRIVATE);
+			fis = openFileInput(curr_log_file_base_name);
+			//reader = new BufferedReader(new InputStreamReader(input));
+			
+			//while((line = reader.readLine()) != null){
+			  while((lineInt = fis.read()) != -1){
+				  line = ((Integer) lineInt).toString();
+				if(line.contains("Trigger occurred at")){
+					date = line;
+					date = date.replaceAll("/","");
+				}else if(line.length()==0){
+					
+				}else if(line.contains("Chan")){
+					String modLine = line.replaceAll("\\W","");
+					String[] columns = modLine.split("Rx");
+					String CANidMsg = columns[1];
+					
+					if((CANidMsg.substring(0,4)).equals("0201")){
+						vehSpd_str = CANidMsg.substring(12,16);
+						vehSpd_int = Integer.parseInt(vehSpd_str, 16);
+						vehSpd_int = (int) (((vehSpd_int * 0.01) - 100)*(0.62));
+						
+						CAN_VEH_SPD.add(vehSpd_int); //4-19
+				
+						fos.write((CAN_VEH_SPD.get(i).toString()).getBytes());
+						
+					}else if((CANidMsg.substring(0,4)).equals("0420")){
+						
+						 eng_cool_temp_str = CANidMsg.substring(4,6);
+						 eng_cool_temp_int = Integer.parseInt(eng_cool_temp_str, 16);
+						 eng_cool_temp_int = (int) (eng_cool_temp_int - 40);
+						 
+						 CAN_ENG_COOL_TEMP.add(eng_cool_temp_int);
+		
+						 fuel_flow_str = CANidMsg.substring(8,10);
+						 fuel_flow_int = Integer.parseInt(fuel_flow_str, 16);
+						 fuel_flow_flt = (float) (fuel_flow_int * 0.000020833);
+						 
+						 CAN_FUEL_FLOW.add(fuel_flow_flt);
+						 
+						 /*textV.append(CAN_FUEL_FLOW.get(i).toString());
+					    	textV.append("\n");
+					    	i++;*/				
+					}
+				}
+			  }
+				fos.close();
+				
+				for(int a = 0; a < CAN_VEH_SPD.size(); a++){
+					vehSpd_flt += CAN_VEH_SPD.get(a);
+				}
+				vehSpd_flt = vehSpd_flt/CAN_VEH_SPD.size();
+				vehSpd_flt = (float)Math.round(vehSpd_flt*100)/100;
+				vehSpd_str = Float.toString(vehSpd_flt);
+				readText.append("Vehicle Speed ");
+				readText.append(vehSpd_str);
+				readText.append("\n");
+				
+				for(int b = 0; b < CAN_ENG_COOL_TEMP.size(); b++){
+					
+					eng_cool_temp_flt += CAN_ENG_COOL_TEMP.get(b);
+					
+				}
+				eng_cool_temp_flt = eng_cool_temp_flt/CAN_ENG_COOL_TEMP.size();
+				eng_cool_temp_str = Float.toString(eng_cool_temp_flt);
+				readText.append("Coolant Temp ");
+				readText.append(eng_cool_temp_str);
+				readText.append("\n");
+				
+				for(int c = 0; c < CAN_FUEL_FLOW.size(); c++){
+					
+					fuel_flow_flt += CAN_FUEL_FLOW.get(c);
+					
+				}
+				fuel_flow_flt = fuel_flow_flt/CAN_ENG_COOL_TEMP.size();
+				fuel_flow_str = Float.toString(fuel_flow_flt);
+				readText.append("Fuel Flow ");
+				readText.append(fuel_flow_str);
+				readText.append("\n");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+		
 }
