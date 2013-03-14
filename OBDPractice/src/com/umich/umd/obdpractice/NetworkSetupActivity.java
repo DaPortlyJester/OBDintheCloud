@@ -32,9 +32,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
-public class NetworkSetupActivity extends Activity{
-	
-	
+public class NetworkSetupActivity extends Activity {
+
 	/**************************** Network Setup Activity Variables *************************/
 	private static final String DEBUG_TAG = "NetworkConnect";
 	private static final String SCHEME_TYPE = "http";
@@ -45,29 +44,29 @@ public class NetworkSetupActivity extends Activity{
 	private static final String DOWNLOAD_LOG_PARAMS = "?uploaddir=/data/&extension=.log&type=ascii&name=";
 	private static final String DOWNLOAD_VERB = "&verb=Download";
 	private final static String TAG_JSON_OUTPUT = "json_string";
-	
+
 	private final static String DOWNLOADED_LOG_FILES = "downloaded_logs";
-	
+
 	private final static String USERNAME = "sysadmin";
 	private final static String PASSWORD = "dggryphon";
-	
+
 	private final static int PICK_FILE_REQUEST = 0;
 	private final static int DOWNLOAD_FILE_REQUEST = 1;
 	private static int CURRENT_REQUEST = 0;
-	
+
 	private boolean log_file_picked = false;
 	private static String curr_log_file_base_name = null;
 	private static String last_log_file_base_name = null;
-	
+
 	private boolean accessAuthenticated = false;
-	
+
 	private TextView readText;
 	/************************* End of Network Setup Activity Variables ********************/
-	
+
 	/************************* File Parsing Variables **************************************/
-	
+
 	BufferedReader reader;
-	//InputStream input;
+	// InputStream input;
 	String line;
 	int lineInt;
 	String date = null;
@@ -81,15 +80,15 @@ public class NetworkSetupActivity extends Activity{
 	String vehSpd_str;
 	String eng_cool_temp_str;
 	String fuel_flow_str;
-	
-	ArrayList<Integer>CAN_VEH_SPD=new ArrayList<Integer>();
-	ArrayList<Integer>CAN_ENG_COOL_TEMP = new ArrayList<Integer>();
-	ArrayList<Float>CAN_FUEL_FLOW = new ArrayList<Float>();
-	
+
+	ArrayList<Integer> CAN_VEH_SPD = new ArrayList<Integer>();
+	ArrayList<Integer> CAN_ENG_COOL_TEMP = new ArrayList<Integer>();
+	ArrayList<Float> CAN_FUEL_FLOW = new ArrayList<Float>();
+
 	int i = 0;
 	int j = 0;
 	int k = 0;
-	
+
 	/************************** End of Log File Parsing Variables **************************/
 
 	@Override
@@ -100,7 +99,7 @@ public class NetworkSetupActivity extends Activity{
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		findViewsById();
 	}
-	
+
 	private void findViewsById() {
 		readText = (TextView) findViewById(R.id.fileText);
 	}
@@ -128,85 +127,78 @@ public class NetworkSetupActivity extends Activity{
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
 	 * Android tutorial based function, ignore
+	 * 
 	 * @param view
 	 */
-	/*public void connectToGryphon(View view) {
-		
-		String stringURL = urlText.getText().toString();
-		
-		ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-		
-		if(networkInfo != null && networkInfo.isConnected())
-		{
-			//new DownloadWebpageText().execute(stringURL);
-			
-		} else 
-		{
-			textView.setText("No network connection available.");
-		}
-	}*/
-	
+	/*
+	 * public void connectToGryphon(View view) {
+	 * 
+	 * String stringURL = urlText.getText().toString();
+	 * 
+	 * ConnectivityManager connMgr =
+	 * (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	 * 
+	 * NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	 * 
+	 * if(networkInfo != null && networkInfo.isConnected()) { //new
+	 * DownloadWebpageText().execute(stringURL);
+	 * 
+	 * } else { textView.setText("No network connection available."); } }
+	 */
+
 	/**
 	 * 
 	 * @author AbsElite
-	 *
+	 * 
 	 */
-	private class GetXMLTask extends AsyncTask<String,Void,String>
-	{
-		protected String doInBackground(String... urls)
-		{
+	private class GetXMLTask extends AsyncTask<String, Void, String> {
+		protected String doInBackground(String... urls) {
 			String output = null;
-			for(String url: urls) {
+			for (String url : urls) {
 				output = getOutputFromUrl(url);
 			}
 			return output;
 		}
-		
-		protected String getOutputFromUrl(String url)
-		{
-			Log.d(DEBUG_TAG,"Attempting to instantiate StringBuffer");
+
+		protected String getOutputFromUrl(String url) {
+			Log.d(DEBUG_TAG, "Attempting to instantiate StringBuffer");
 			StringBuffer output = new StringBuffer("");
-			Log.d(DEBUG_TAG,"StringBufferIn");
-			try
-			{
-				Log.d(DEBUG_TAG,"Trying Input Stream");
+			Log.d(DEBUG_TAG, "StringBufferIn");
+			try {
+				Log.d(DEBUG_TAG, "Trying Input Stream");
 				InputStream stream = getHttpConnection(url);
-				Log.d(DEBUG_TAG,"InputStream successful");
+				Log.d(DEBUG_TAG, "InputStream successful");
 				int count = 0;
-				
-				Log.d(DEBUG_TAG,"Trying stream availability check.");
+
+				Log.d(DEBUG_TAG, "Trying stream availability check.");
 				int streamState = stream.available();
-				Log.d(DEBUG_TAG,"Stream check successful.");
-				
-				while(stream.available()!=0 && count < 20){
-					Log.d(DEBUG_TAG,"Stream not available. Waiting");
+				Log.d(DEBUG_TAG, "Stream check successful.");
+
+				while (stream.available() != 0 && count < 20) {
+					Log.d(DEBUG_TAG, "Stream not available. Waiting");
 					this.wait(100);
-					count+=1;
-				};
-				if(count > 19)
-				{
-					Log.e(DEBUG_TAG,"HttpConnection stream didn't become available");
+					count += 1;
+				}
+				;
+				if (count > 19) {
+					Log.e(DEBUG_TAG,
+							"HttpConnection stream didn't become available");
 					finish();
 				}
-				Log.d(DEBUG_TAG,"Preparing to initiate BufferedReader");
-				BufferedReader buffer = new BufferedReader ( new InputStreamReader(stream));
-				Log.d(DEBUG_TAG,"BufferedReader instantiated");
+				Log.d(DEBUG_TAG, "Preparing to initiate BufferedReader");
+				BufferedReader buffer = new BufferedReader(
+						new InputStreamReader(stream));
+				Log.d(DEBUG_TAG, "BufferedReader instantiated");
 				String s = "";
-				
-				while((s = buffer.readLine()) != null)
+
+				while ((s = buffer.readLine()) != null)
 					output.append(s);
-			}
-			catch(IOException e1)
-			{
+			} catch (IOException e1) {
 				e1.printStackTrace();
-			}
-			catch(NullPointerException ex)
-			{
+			} catch (NullPointerException ex) {
 				Log.e(DEBUG_TAG, "NullPointer found in BufferedReader", ex);
 				ex.printStackTrace();
 			} catch (InterruptedException e) {
@@ -215,52 +207,55 @@ public class NetworkSetupActivity extends Activity{
 			}
 			return output.toString();
 		}
-		
+
 		private InputStream getHttpConnection(String urlString)
-			throws IOException
-		{
+				throws IOException {
 			InputStream stream = null;
 			HttpURLConnection httpConnection;
 			URL url;
-			
+
 			String userPassword, encoding;
-			
+
 			// prepare authorization string using android.util.Base64
-	        userPassword = String.format("%s:%s", USERNAME, PASSWORD);
-	        int flags = Base64.NO_WRAP | Base64.URL_SAFE;
-	        encoding = Base64.encodeToString(userPassword.getBytes(), flags);
-	        
-	        // Used android based Base64 encoder instead of sun encoder
-	        // Expected to perform better than Sun version
-	        //encoding = new sun.misc.BASE64Encoder().encode(userPassword.getBytes());
-			
+			userPassword = String.format("%s:%s", USERNAME, PASSWORD);
+			int flags = Base64.NO_WRAP | Base64.URL_SAFE;
+			encoding = Base64.encodeToString(userPassword.getBytes(), flags);
+
+			// Used android based Base64 encoder instead of sun encoder
+			// Expected to perform better than Sun version
+			// encoding = new
+			// sun.misc.BASE64Encoder().encode(userPassword.getBytes());
+
 			try {
-				
-				// Use built in functions of url to convert url string to html encoded version
+
+				// Use built in functions of url to convert url string to html
+				// encoded version
 				url = new URL(urlString);
-				URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				URI uri = new URI(url.getProtocol(), url.getUserInfo(),
+						url.getHost(), url.getPort(), url.getPath(),
+						url.getQuery(), url.getRef());
 				url = uri.toURL();
-				
-				Log.d(DEBUG_TAG,"The current URL is: " + url.toString());
+
+				Log.d(DEBUG_TAG, "The current URL is: " + url.toString());
 				// Open HttpURLConnection
 				httpConnection = (HttpURLConnection) url.openConnection();
 				// Append authorization string to HTTP request header
-				if(!accessAuthenticated) {
-					httpConnection.setRequestProperty("Authorization", "Basic " + encoding);
-					//accessAuthenticated = true;
+				if (!accessAuthenticated) {
+					httpConnection.setRequestProperty("Authorization", "Basic "
+							+ encoding);
+					// accessAuthenticated = true;
 				}
-				
+
 				/*
 				 * From open Tutorials example, using DGTech solution
-				httpConnection.setRequestMethod("GET");
-				httpConnection.connect();
-				*/
-				
-				if(httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK)
-				{
-					Log.d(DEBUG_TAG,"HttpURLConnection: HTTP_OK");
+				 * httpConnection.setRequestMethod("GET");
+				 * httpConnection.connect();
+				 */
+
+				if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					Log.d(DEBUG_TAG, "HttpURLConnection: HTTP_OK");
 					stream = httpConnection.getInputStream();
-					Log.d(DEBUG_TAG,"Stream for httpConnection set");
+					Log.d(DEBUG_TAG, "Stream for httpConnection set");
 				}
 			} catch (MalformedURLException ex) {
 				Log.e(DEBUG_TAG, "Malformed URL", ex);
@@ -269,188 +264,206 @@ public class NetworkSetupActivity extends Activity{
 				Log.e(DEBUG_TAG, "URI to URL convetsion failed", e);
 				e.printStackTrace();
 			}
-			
+
 			return stream;
 		}
-		
+
 		@Override
-		protected void onPostExecute(String output)
-		{
-			if(CURRENT_REQUEST == PICK_FILE_REQUEST) {
-			
-				Intent filesListIntent = new Intent(getApplicationContext(), LogFilesList.class);
+		protected void onPostExecute(String output) {
+			if (CURRENT_REQUEST == PICK_FILE_REQUEST) {
+
+				Intent filesListIntent = new Intent(getApplicationContext(),
+						LogFilesList.class);
 				filesListIntent.putExtra(TAG_JSON_OUTPUT, output);
-				startActivityForResult(filesListIntent,PICK_FILE_REQUEST);
+				startActivityForResult(filesListIntent, PICK_FILE_REQUEST);
 			} else {
 				try {
 					readText.setText("");
 					parseLogFile(output);
 					writeToFile(output);
-					FileOutputStream dlLogFile = openFileOutput(curr_log_file_base_name + ".txt",Context.MODE_PRIVATE);
+					FileOutputStream dlLogFile = openFileOutput(
+							curr_log_file_base_name + ".txt",
+							Context.MODE_PRIVATE);
 					dlLogFile.write(output.getBytes());
 					dlLogFile.close();
-					//readText.setText("File download successful: "+ curr_log_file_base_name);
-					writeToFile(curr_log_file_base_name,DOWNLOADED_LOG_FILES);
+					// readText.setText("File download successful: "+
+					// curr_log_file_base_name);
+					writeToFile(curr_log_file_base_name, DOWNLOADED_LOG_FILES);
 					last_log_file_base_name = curr_log_file_base_name;
 					curr_log_file_base_name = null;
-				}catch (Exception e) {
+				} catch (Exception e) {
 					Log.e(DEBUG_TAG, "Error while saving log to file", e);
 				}
-				
+
 			}
 		}
 	}
-	
+
 	public void pickLogFile(View view) {
-		
+
 		CURRENT_REQUEST = PICK_FILE_REQUEST;
-		String listLogsURLString = GRYPH_IP+LIST_LOG_FILE_SCRIPT+LIST_LOGS_PARAMS;
+		String listLogsURLString = GRYPH_IP + LIST_LOG_FILE_SCRIPT
+				+ LIST_LOGS_PARAMS;
 		Log.d(DEBUG_TAG, "The list log URL is:" + listLogsURLString);
 		GetXMLTask task = new GetXMLTask();
-		task.execute(new String [] {listLogsURLString});
+		task.execute(new String[] { listLogsURLString });
 	}
-	
+
 	public void downloadFile(View view) {
-		
-		if(log_file_picked)
-		{
+
+		if (log_file_picked) {
 			CURRENT_REQUEST = DOWNLOAD_FILE_REQUEST;
-			String downloadLogURLString = GRYPH_IP+DOWNLOAD_LOG_FILE_SCRIPT+DOWNLOAD_LOG_PARAMS+curr_log_file_base_name+DOWNLOAD_VERB;
+			String downloadLogURLString = GRYPH_IP + DOWNLOAD_LOG_FILE_SCRIPT
+					+ DOWNLOAD_LOG_PARAMS + curr_log_file_base_name
+					+ DOWNLOAD_VERB;
 			Log.d(DEBUG_TAG, "The download URL is:" + downloadLogURLString);
 			readText.setText(downloadLogURLString);
 			GetXMLTask task = new GetXMLTask();
-			task.execute(new String [] {downloadLogURLString});
+			task.execute(new String[] { downloadLogURLString });
 			log_file_picked = false;
 		} else {
 			readText.setText("No File Picked. Please Choose a Log File First");
 		}
-			
-		
+
 	}
-	
-	protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
-        if (requestCode == PICK_FILE_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                // A file was picked, display it to the user
-            	curr_log_file_base_name = data.getStringExtra("file");
-                readText.setText(curr_log_file_base_name);
-                log_file_picked = true;
-            }
-        }
-    }
-	
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PICK_FILE_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				// A file was picked, display it to the user
+				curr_log_file_base_name = data.getStringExtra("file");
+				readText.setText(curr_log_file_base_name);
+				log_file_picked = true;
+			}
+		}
+	}
+
 	private void writeToFile(String data) {
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(curr_log_file_base_name, Context.MODE_WORLD_READABLE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e(DEBUG_TAG, "File write failed: " + e.toString());
-        }
+		try {
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+					openFileOutput(curr_log_file_base_name,
+							Context.MODE_WORLD_READABLE));
+			outputStreamWriter.write(data);
+			outputStreamWriter.close();
+		} catch (IOException e) {
+			Log.e(DEBUG_TAG, "File write failed: " + e.toString());
+		}
 	}
-	
+
 	private void writeToFile(String data, String filename) {
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(filename, Context.MODE_WORLD_READABLE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e(DEBUG_TAG, "File write failed: " + e.toString());
-        }
+		try {
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+					openFileOutput(filename, Context.MODE_WORLD_READABLE));
+			outputStreamWriter.write(data);
+			outputStreamWriter.close();
+		} catch (IOException e) {
+			Log.e(DEBUG_TAG, "File write failed: " + e.toString());
+		}
 	}
-	
+
 	private void parseLogFile(String data) {
-		
+
 		FileOutputStream fos = null;
 		InputStream fis = null;
 		try {
-			//input = getAssets().open("test5.txt");
+			// input = getAssets().open("test5.txt");
 			fos = openFileOutput("Output.txt", Context.MODE_PRIVATE);
 			fis = openFileInput(curr_log_file_base_name);
-			//reader = new BufferedReader(new InputStreamReader(input));
-			
-			//while((line = reader.readLine()) != null){
-			  while((lineInt = fis.read()) != -1){
-				  line = ((Integer) lineInt).toString();
-				if(line.contains("Trigger occurred at")){
+			// reader = new BufferedReader(new InputStreamReader(input));
+
+			// while((line = reader.readLine()) != null){
+			while ((lineInt = fis.read()) != -1) {
+				Log.d(DEBUG_TAG, "The line read is " + lineInt);
+				line = ((Integer) lineInt).toString();
+				Log.d(DEBUG_TAG, "The line after conversion is " + line);
+				if (line.contains("Trigger occurred at")) {
 					date = line;
-					date = date.replaceAll("/","");
-				}else if(line.length()==0){
-					
-				}else if(line.contains("Chan")){
-					String modLine = line.replaceAll("\\W","");
+					date = date.replaceAll("/", "");
+					Log.d(DEBUG_TAG, "Date Found: " + date);
+				} else if (line.length() == 0) {
+					Log.d(DEBUG_TAG, "No information");
+
+				} else if (line.contains("Chan")) {
+					String modLine = line.replaceAll("\\W", "");
 					String[] columns = modLine.split("Rx");
 					String CANidMsg = columns[1];
-					
-					if((CANidMsg.substring(0,4)).equals("0201")){
-						vehSpd_str = CANidMsg.substring(12,16);
+					Log.d(DEBUG_TAG, "The CANidMsg is" + CANidMsg);
+
+					if ((CANidMsg.substring(0, 4)).equals("0201")) {
+						vehSpd_str = CANidMsg.substring(12, 16);
+						Log.d(DEBUG_TAG, "Found VehSpd: " + vehSpd_str);
 						vehSpd_int = Integer.parseInt(vehSpd_str, 16);
-						vehSpd_int = (int) (((vehSpd_int * 0.01) - 100)*(0.62));
-						
-						CAN_VEH_SPD.add(vehSpd_int); //4-19
-				
+						vehSpd_int = (int) (((vehSpd_int * 0.01) - 100) * (0.62));
+
+						CAN_VEH_SPD.add(vehSpd_int); // 4-19
+						Log.d(DEBUG_TAG,
+								"Value added to Array: "
+										+ String.valueOf(vehSpd_int));
+
 						fos.write((CAN_VEH_SPD.get(i).toString()).getBytes());
-						
-					}else if((CANidMsg.substring(0,4)).equals("0420")){
-						
-						 eng_cool_temp_str = CANidMsg.substring(4,6);
-						 eng_cool_temp_int = Integer.parseInt(eng_cool_temp_str, 16);
-						 eng_cool_temp_int = (int) (eng_cool_temp_int - 40);
-						 
-						 CAN_ENG_COOL_TEMP.add(eng_cool_temp_int);
-		
-						 fuel_flow_str = CANidMsg.substring(8,10);
-						 fuel_flow_int = Integer.parseInt(fuel_flow_str, 16);
-						 fuel_flow_flt = (float) (fuel_flow_int * 0.000020833);
-						 
-						 CAN_FUEL_FLOW.add(fuel_flow_flt);
-						 
-						 /*textV.append(CAN_FUEL_FLOW.get(i).toString());
-					    	textV.append("\n");
-					    	i++;*/				
+
+					} else if ((CANidMsg.substring(0, 4)).equals("0420")) {
+
+						eng_cool_temp_str = CANidMsg.substring(4, 6);
+						Log.d(DEBUG_TAG, "Enging Cool Temp Found"
+								+ eng_cool_temp_str);
+						eng_cool_temp_int = Integer.parseInt(eng_cool_temp_str,
+								16);
+						eng_cool_temp_int = (int) (eng_cool_temp_int - 40);
+
+						CAN_ENG_COOL_TEMP.add(eng_cool_temp_int);
+
+						fuel_flow_str = CANidMsg.substring(8, 10);
+						Log.d(DEBUG_TAG, "Fuel Flow Found: " + fuel_flow_str);
+						fuel_flow_int = Integer.parseInt(fuel_flow_str, 16);
+						fuel_flow_flt = (float) (fuel_flow_int * 0.000020833);
+
+						CAN_FUEL_FLOW.add(fuel_flow_flt);
+
+						/*
+						 * textV.append(CAN_FUEL_FLOW.get(i).toString());
+						 * textV.append("\n"); i++;
+						 */
 					}
 				}
-			  }
-				fos.close();
-				
-				for(int a = 0; a < CAN_VEH_SPD.size(); a++){
-					vehSpd_flt += CAN_VEH_SPD.get(a);
-				}
-				vehSpd_flt = vehSpd_flt/CAN_VEH_SPD.size();
-				vehSpd_flt = (float)Math.round(vehSpd_flt*100)/100;
-				vehSpd_str = Float.toString(vehSpd_flt);
-				readText.append("Vehicle Speed ");
-				readText.append(vehSpd_str);
-				readText.append("\n");
-				
-				for(int b = 0; b < CAN_ENG_COOL_TEMP.size(); b++){
-					
-					eng_cool_temp_flt += CAN_ENG_COOL_TEMP.get(b);
-					
-				}
-				eng_cool_temp_flt = eng_cool_temp_flt/CAN_ENG_COOL_TEMP.size();
-				eng_cool_temp_str = Float.toString(eng_cool_temp_flt);
-				readText.append("Coolant Temp ");
-				readText.append(eng_cool_temp_str);
-				readText.append("\n");
-				
-				for(int c = 0; c < CAN_FUEL_FLOW.size(); c++){
-					
-					fuel_flow_flt += CAN_FUEL_FLOW.get(c);
-					
-				}
-				fuel_flow_flt = fuel_flow_flt/CAN_ENG_COOL_TEMP.size();
-				fuel_flow_str = Float.toString(fuel_flow_flt);
-				readText.append("Fuel Flow ");
-				readText.append(fuel_flow_str);
-				readText.append("\n");
-				
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+			fos.close();
+
+			for (int a = 0; a < CAN_VEH_SPD.size(); a++) {
+				vehSpd_flt += CAN_VEH_SPD.get(a);
+			}
+			vehSpd_flt = vehSpd_flt / CAN_VEH_SPD.size();
+			vehSpd_flt = (float) Math.round(vehSpd_flt * 100) / 100;
+			vehSpd_str = Float.toString(vehSpd_flt);
+			readText.append("Vehicle Speed ");
+			readText.append(vehSpd_str);
+			readText.append("\n");
+
+			for (int b = 0; b < CAN_ENG_COOL_TEMP.size(); b++) {
+
+				eng_cool_temp_flt += CAN_ENG_COOL_TEMP.get(b);
+
+			}
+			eng_cool_temp_flt = eng_cool_temp_flt / CAN_ENG_COOL_TEMP.size();
+			eng_cool_temp_str = Float.toString(eng_cool_temp_flt);
+			readText.append("Coolant Temp ");
+			readText.append(eng_cool_temp_str);
+			readText.append("\n");
+
+			for (int c = 0; c < CAN_FUEL_FLOW.size(); c++) {
+
+				fuel_flow_flt += CAN_FUEL_FLOW.get(c);
+
+			}
+			fuel_flow_flt = fuel_flow_flt / CAN_ENG_COOL_TEMP.size();
+			fuel_flow_str = Float.toString(fuel_flow_flt);
+			readText.append("Fuel Flow ");
+			readText.append(fuel_flow_str);
+			readText.append("\n");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-		
+
 }

@@ -28,9 +28,6 @@ public class MainActivity extends Activity {
     public void sendMessage(View view) 
     {
     	Intent intent = new Intent(this, DisplayMessageActivity.class);
-    	// TextView textView = (TextView) findViewById(R.id.edit_message);
-    	// String message = textView.getText().toString();
-    	// intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);    	
     }
     
@@ -59,8 +56,7 @@ public class MainActivity extends Activity {
     public void viewStorage(View view)
     {
     	Intent intent = new Intent(this,ViewStoredLogsActivity.class);
-    	startActivity(intent);
-    	
+    	startActivity(intent);	
     }
     
 }
