@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import android.os.AsyncTask;
@@ -36,7 +35,7 @@ public class NetworkSetupActivity extends Activity {
 
 	/**************************** Network Setup Activity Variables *************************/
 	private static final String DEBUG_TAG = "NetworkConnect";
-	private static final String SCHEME_TYPE = "http";
+	// private static final String SCHEME_TYPE = "http";
 	private static final String GRYPH_IP = "http://192.168.0.112";
 	private static final String LIST_LOG_FILE_SCRIPT = "/sysadmin/playback_action.php";
 	private static final String DOWNLOAD_LOG_FILE_SCRIPT = "/sysadmin/log_action.php";
@@ -195,7 +194,7 @@ public class NetworkSetupActivity extends Activity {
 				String s = "";
 
 				while ((s = buffer.readLine()) != null)
-					output.append(s);
+					output.append(s + "\n");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (NullPointerException ex) {
@@ -279,8 +278,8 @@ public class NetworkSetupActivity extends Activity {
 			} else {
 				try {
 					readText.setText("");
-					parseLogFile(output);
 					writeToFile(output);
+					parseLogFile(output);
 					FileOutputStream dlLogFile = openFileOutput(
 							curr_log_file_base_name + ".txt",
 							Context.MODE_PRIVATE);
@@ -342,8 +341,9 @@ public class NetworkSetupActivity extends Activity {
 		try {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
 					openFileOutput(curr_log_file_base_name,
-							Context.MODE_WORLD_READABLE));
+							Context.MODE_PRIVATE));
 			outputStreamWriter.write(data);
+			Log.d(DEBUG_TAG, "Output written to " + curr_log_file_base_name);
 			outputStreamWriter.close();
 		} catch (IOException e) {
 			Log.e(DEBUG_TAG, "File write failed: " + e.toString());
@@ -353,7 +353,7 @@ public class NetworkSetupActivity extends Activity {
 	private void writeToFile(String data, String filename) {
 		try {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-					openFileOutput(filename, Context.MODE_WORLD_READABLE));
+					openFileOutput(filename, Context.MODE_PRIVATE));
 			outputStreamWriter.write(data);
 			outputStreamWriter.close();
 		} catch (IOException e) {
@@ -366,16 +366,14 @@ public class NetworkSetupActivity extends Activity {
 		FileOutputStream fos = null;
 		InputStream fis = null;
 		try {
-			// input = getAssets().open("test5.txt");
 			fos = openFileOutput("Output.txt", Context.MODE_PRIVATE);
 			fis = openFileInput(curr_log_file_base_name);
-			// reader = new BufferedReader(new InputStreamReader(input));
+			reader = new BufferedReader(new InputStreamReader(fis));
 
-			// while((line = reader.readLine()) != null){
-			while ((lineInt = fis.read()) != -1) {
-				Log.d(DEBUG_TAG, "The line read is " + lineInt);
-				line = ((Integer) lineInt).toString();
-				Log.d(DEBUG_TAG, "The line after conversion is " + line);
+			while ((line = reader.readLine()) != null) {
+				//Log.d(DEBUG_TAG, "The line read is " + lineInt);
+				//line = ((Integer) lineInt).toString();
+				Log.d(DEBUG_TAG, "The line is " + line);
 				if (line.contains("Trigger occurred at")) {
 					date = line;
 					date = date.replaceAll("/", "");

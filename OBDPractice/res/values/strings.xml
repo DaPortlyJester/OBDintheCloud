@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">OBDPractice</string>
+    <string name="app_name">OBD in the Cloud</string>
     <string name="edit_message">Enter a message</string>
+    
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 
     <!-- Basic Button Titles - Not used (yet) -->
     <string name="button_setup_network">Network</string>
