@@ -9,6 +9,12 @@ import org.json.JSONObject;
 // import android.content.Intent;
 import android.util.Log;
 
+/**
+ * Parse JSON Objects returned from Gryphon log
+ * file list calls
+ * @author AbsElite
+ *
+ */
 public class JSONParser {
 
 	//JSON Node names

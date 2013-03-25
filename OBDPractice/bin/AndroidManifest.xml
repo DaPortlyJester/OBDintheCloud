@@ -75,6 +75,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.umich.umd.obdpractice.MainActivity" />
         </activity>
+        <activity
+            android:name="com.umich.umd.obdpractice.CloudFileUpload"
+            android:label="@string/title_activity_cloud_file_upload"
+            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.umich.umd.obdpractice.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -11,6 +11,12 @@ import java.net.URL;
 import android.os.AsyncTask;
 import android.util.Base64;
 
+/**
+ * Attempt to create an external task for doing HTTP Connections
+ * In Progress
+ * @author AbsElite
+ *
+ */
 public class GetHTTPTask extends AsyncTask<String,Void,String>{
 
 /*	private static final String GRYPH_IP="http://192.168.0.112/";

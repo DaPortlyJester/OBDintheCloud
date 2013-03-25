@@ -26,19 +26,21 @@ public final class R {
         public static final int select_logfiles=0x7f070006;
     }
     public static final class layout {
-        public static final int activity_log_files_list=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_network_setup=0x7f030002;
-        public static final int activity_read_log_files=0x7f030003;
-        public static final int activity_view_stored_logs=0x7f030004;
-        public static final int list_item=0x7f030005;
+        public static final int activity_cloud_file_upload=0x7f030000;
+        public static final int activity_log_files_list=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_network_setup=0x7f030003;
+        public static final int activity_read_log_files=0x7f030004;
+        public static final int activity_view_stored_logs=0x7f030005;
+        public static final int list_item=0x7f030006;
     }
     public static final class menu {
-        public static final int activity_log_files_list=0x7f060000;
-        public static final int activity_main=0x7f060001;
-        public static final int activity_network_setup=0x7f060002;
-        public static final int activity_read_log_files=0x7f060003;
-        public static final int activity_view_stored_logs=0x7f060004;
+        public static final int activity_cloud_file_upload=0x7f060000;
+        public static final int activity_log_files_list=0x7f060001;
+        public static final int activity_main=0x7f060002;
+        public static final int activity_network_setup=0x7f060003;
+        public static final int activity_read_log_files=0x7f060004;
+        public static final int activity_view_stored_logs=0x7f060005;
     }
     public static final class string {
         public static final int N_A=0x7f040020;
@@ -79,6 +81,7 @@ public final class R {
          */
         public static final int setup_network=0x7f04000f;
         public static final int start_logging=0x7f040010;
+        public static final int title_activity_cloud_file_upload=0x7f040022;
         public static final int title_activity_display_message=0x7f04000c;
         public static final int title_activity_log_files_list=0x7f04001a;
         /**  Activity Titles 

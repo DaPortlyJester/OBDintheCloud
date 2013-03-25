@@ -3,7 +3,7 @@
 
     <string name="app_name">OBD in the Cloud</string>
     <string name="edit_message">Enter a message</string>
-    
+
     <!-- Dialog Buttons Text -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -44,12 +44,13 @@
     <string name="title_activity_log_files_list">LogFilesList</string>
     <string name="title_activity_view_stored_logs">ViewStoredLogs</string>
     <string name="title_activity_read_log_files">ReadLogFiles</string>
-    
+
     <!-- View Log Files Strings -->
     <string name="filename">No File Chosen</string>
     <string name="fileContents">No Text to Display</string>
     <string name="list_logfiles">Click to Select Another Log File</string>
     <string name="N_A">Done Viewing Files</string>
     <string name="select_file">Select a file</string>
+    <string name="title_activity_cloud_file_upload">CloudFileUpload</string>
 
 </resources>
