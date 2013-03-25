@@ -4,11 +4,43 @@
     android:layout_height="match_parent"
     tools:context=".ViewStoredLogsActivity" >
 
+        <TextView
+        android:id="@+id/file_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="@string/filename" />
+
     <TextView
+        android:id="@+id/logfile_contents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/select_logfiles"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/file_name"
+        android:maxLines="100"
+        android:scrollbars="vertical"
+        android:text="@string/fileContents" />
+
+    <Button
+        android:id="@+id/select_logfiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="selectFile"
+        android:text="@string/list_logfiles"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="endView"
+        android:text="@string/N_A" />
 
 </RelativeLayout>

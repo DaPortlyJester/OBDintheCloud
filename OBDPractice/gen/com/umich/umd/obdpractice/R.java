@@ -16,25 +16,32 @@ public final class R {
     }
     public static final class id {
         public static final int button1=0x7f070002;
+        public static final int cancel_button=0x7f070007;
         public static final int fileText=0x7f070003;
+        public static final int file_name=0x7f070004;
         public static final int ipAddress=0x7f070000;
-        public static final int menu_settings=0x7f070004;
+        public static final int logfile_contents=0x7f070005;
+        public static final int menu_settings=0x7f070008;
         public static final int networkIP=0x7f070001;
+        public static final int select_logfiles=0x7f070006;
     }
     public static final class layout {
         public static final int activity_log_files_list=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_network_setup=0x7f030002;
-        public static final int activity_view_stored_logs=0x7f030003;
-        public static final int list_item=0x7f030004;
+        public static final int activity_read_log_files=0x7f030003;
+        public static final int activity_view_stored_logs=0x7f030004;
+        public static final int list_item=0x7f030005;
     }
     public static final class menu {
         public static final int activity_log_files_list=0x7f060000;
         public static final int activity_main=0x7f060001;
         public static final int activity_network_setup=0x7f060002;
-        public static final int activity_view_stored_logs=0x7f060003;
+        public static final int activity_read_log_files=0x7f060003;
+        public static final int activity_view_stored_logs=0x7f060004;
     }
     public static final class string {
+        public static final int N_A=0x7f040020;
         public static final int app_name=0x7f040000;
         public static final int button_connect_cloud=0x7f040009;
         public static final int button_gryphon_monitor=0x7f040008;
@@ -50,6 +57,10 @@ public final class R {
         /**  Network Setup Screen Strings 
          */
         public static final int enter_ip_adress=0x7f040015;
+        public static final int fileContents=0x7f04001e;
+        /**  View Log Files Strings 
+         */
+        public static final int filename=0x7f04001d;
         public static final int gryphon_log_filename=0x7f040017;
         public static final int gryphon_monitor=0x7f040011;
         /**  Default Hello World Text 
@@ -57,11 +68,13 @@ public final class R {
         public static final int hello_world=0x7f040014;
         public static final int ip_address=0x7f040016;
         public static final int list_button=0x7f040018;
+        public static final int list_logfiles=0x7f04001f;
         /**  Menu Strings 
          */
         public static final int menu_settings=0x7f04000e;
         public static final int no=0x7f040003;
         public static final int ok=0x7f040005;
+        public static final int select_file=0x7f040021;
         /**  Strings for Main Activity Buttons 
          */
         public static final int setup_network=0x7f04000f;
@@ -72,8 +85,11 @@ public final class R {
          */
         public static final int title_activity_main=0x7f04000b;
         public static final int title_activity_network_setup=0x7f04000d;
+        public static final int title_activity_read_log_files=0x7f04001c;
         public static final int title_activity_view_stored_logs=0x7f04001b;
         public static final int view_logs=0x7f040013;
+        /**  Dialog Buttons Text 
+         */
         public static final int yes=0x7f040002;
     }
     public static final class style {

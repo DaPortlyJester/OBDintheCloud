@@ -6,22 +6,25 @@
 
     <TextView
         android:id="@+id/ipAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="21dp"
+        android:gravity="center_horizontal"
         android:text="@string/enter_ip_adress" />
 
     <EditText
         android:id="@+id/networkIP"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/ipAddress"
         android:ems="10"
+        android:gravity="center_horizontal"
         android:inputType="numberDecimal"
         android:selectAllOnFocus="true"
+        android:singleLine="true"
         android:text="@string/ip_address" >
 
         <requestFocus />
@@ -29,7 +32,7 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/fileText"
@@ -37,7 +40,7 @@
         android:text="@string/list_button" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/button1"
@@ -51,6 +54,7 @@
         android:layout_below="@+id/networkIP"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
+        android:singleLine="false"
         android:text="@string/gryphon_log_filename"
         android:textSize="20sp" />
 

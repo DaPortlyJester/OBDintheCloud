@@ -9,7 +9,7 @@
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
@@ -62,6 +62,14 @@
         <activity
             android:name="com.umich.umd.obdpractice.ViewStoredLogsActivity"
             android:label="@string/title_activity_view_stored_logs"
+            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.umich.umd.obdpractice.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.umich.umd.obdpractice.ReadLogFiles"
+            android:label="@string/title_activity_read_log_files"
             android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

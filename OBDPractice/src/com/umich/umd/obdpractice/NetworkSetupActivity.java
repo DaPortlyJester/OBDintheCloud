@@ -1,8 +1,6 @@
 package com.umich.umd.obdpractice;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,6 +152,10 @@ public class NetworkSetupActivity extends Activity {
 	 * 
 	 */
 	private class GetXMLTask extends AsyncTask<String, Void, String> {
+		
+		/**
+		 * 
+		 */
 		protected String doInBackground(String... urls) {
 			String output = null;
 			for (String url : urls) {
@@ -173,9 +175,7 @@ public class NetworkSetupActivity extends Activity {
 				int count = 0;
 
 				Log.d(DEBUG_TAG, "Trying stream availability check.");
-				int streamState = stream.available();
-				Log.d(DEBUG_TAG, "Stream check successful.");
-
+				
 				while (stream.available() != 0 && count < 20) {
 					Log.d(DEBUG_TAG, "Stream not available. Waiting");
 					this.wait(100);
@@ -187,6 +187,7 @@ public class NetworkSetupActivity extends Activity {
 							"HttpConnection stream didn't become available");
 					finish();
 				}
+				Log.d(DEBUG_TAG,"HttpStream available");
 				Log.d(DEBUG_TAG, "Preparing to initiate BufferedReader");
 				BufferedReader buffer = new BufferedReader(
 						new InputStreamReader(stream));
@@ -354,7 +355,7 @@ public class NetworkSetupActivity extends Activity {
 		try {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
 					openFileOutput(filename, Context.MODE_PRIVATE));
-			outputStreamWriter.write(data);
+			outputStreamWriter.write(data + "\n");
 			outputStreamWriter.close();
 		} catch (IOException e) {
 			Log.e(DEBUG_TAG, "File write failed: " + e.toString());
@@ -366,45 +367,45 @@ public class NetworkSetupActivity extends Activity {
 		FileOutputStream fos = null;
 		InputStream fis = null;
 		try {
-			fos = openFileOutput("Output.txt", Context.MODE_PRIVATE);
+			fos = openFileOutput("parsed" + curr_log_file_base_name, Context.MODE_PRIVATE);
 			fis = openFileInput(curr_log_file_base_name);
 			reader = new BufferedReader(new InputStreamReader(fis));
 
 			while ((line = reader.readLine()) != null) {
 				//Log.d(DEBUG_TAG, "The line read is " + lineInt);
 				//line = ((Integer) lineInt).toString();
-				Log.d(DEBUG_TAG, "The line is " + line);
+				//Log.d(DEBUG_TAG, "The line is " + line);
 				if (line.contains("Trigger occurred at")) {
 					date = line;
 					date = date.replaceAll("/", "");
-					Log.d(DEBUG_TAG, "Date Found: " + date);
+					//Log.d(DEBUG_TAG, "Date Found: " + date);
 				} else if (line.length() == 0) {
-					Log.d(DEBUG_TAG, "No information");
+					//Log.d(DEBUG_TAG, "No information");
 
 				} else if (line.contains("Chan")) {
 					String modLine = line.replaceAll("\\W", "");
 					String[] columns = modLine.split("Rx");
 					String CANidMsg = columns[1];
-					Log.d(DEBUG_TAG, "The CANidMsg is" + CANidMsg);
+					//Log.d(DEBUG_TAG, "The CANidMsg is" + CANidMsg);
 
 					if ((CANidMsg.substring(0, 4)).equals("0201")) {
 						vehSpd_str = CANidMsg.substring(12, 16);
-						Log.d(DEBUG_TAG, "Found VehSpd: " + vehSpd_str);
+						/*Log.d(DEBUG_TAG, "Found VehSpd: " + vehSpd_str);*/
 						vehSpd_int = Integer.parseInt(vehSpd_str, 16);
 						vehSpd_int = (int) (((vehSpd_int * 0.01) - 100) * (0.62));
 
 						CAN_VEH_SPD.add(vehSpd_int); // 4-19
-						Log.d(DEBUG_TAG,
+						/*Log.d(DEBUG_TAG,
 								"Value added to Array: "
-										+ String.valueOf(vehSpd_int));
+										+ String.valueOf(vehSpd_int));*/
 
 						fos.write((CAN_VEH_SPD.get(i).toString()).getBytes());
 
 					} else if ((CANidMsg.substring(0, 4)).equals("0420")) {
 
 						eng_cool_temp_str = CANidMsg.substring(4, 6);
-						Log.d(DEBUG_TAG, "Enging Cool Temp Found"
-								+ eng_cool_temp_str);
+						/*Log.d(DEBUG_TAG, "Enging Cool Temp Found"
+								+ eng_cool_temp_str);*/
 						eng_cool_temp_int = Integer.parseInt(eng_cool_temp_str,
 								16);
 						eng_cool_temp_int = (int) (eng_cool_temp_int - 40);
@@ -412,8 +413,8 @@ public class NetworkSetupActivity extends Activity {
 						CAN_ENG_COOL_TEMP.add(eng_cool_temp_int);
 
 						fuel_flow_str = CANidMsg.substring(8, 10);
-						Log.d(DEBUG_TAG, "Fuel Flow Found: " + fuel_flow_str);
-						fuel_flow_int = Integer.parseInt(fuel_flow_str, 16);
+/*						Log.d(DEBUG_TAG, "Fuel Flow Found: " + fuel_flow_str);
+*/						fuel_flow_int = Integer.parseInt(fuel_flow_str, 16);
 						fuel_flow_flt = (float) (fuel_flow_int * 0.000020833);
 
 						CAN_FUEL_FLOW.add(fuel_flow_flt);

@@ -8,17 +8,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.view.View;
 
 public class GetHTTPTask extends AsyncTask<String,Void,String>{
 
-	private static final String GRYPH_IP="http://192.168.0.112/";
+/*	private static final String GRYPH_IP="http://192.168.0.112/";
 	private static final String LOG_FILE_SCRIPT="/sysadmin/playback_action.php";
 	private static final String LIST_LOGS_PARAMS="?verb=list&uploaddir=/data/&extension=.log";
-	private final static String TAG_JSON_OUTPUT = "json_string";
+	private final static String TAG_JSON_OUTPUT = "json_string";*/
 	
 	private final static String USERNAME = "sysadmin";
 	private final static String PASSWORD = "dggryphon";

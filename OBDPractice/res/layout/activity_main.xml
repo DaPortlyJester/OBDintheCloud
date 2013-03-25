@@ -9,24 +9,6 @@
     android:paddingRight="16dp"
     tools:context=".MainActivity"
     tools:ignore="ExtraText" >
-
-    <!--  
-    <EditText android:id="@+id/edit_message"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/edit_message"
-        />
-
-    
-    <TextView 
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:text="@string/setup_network"
-        />"
-    
-        -->
     
     <Button
         android:layout_width="fill_parent"
@@ -34,7 +16,21 @@
         android:text="@string/setup_network"
         android:onClick="setupNetwork"
         />
-         
+       
+	<Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_logs"
+        android:onClick="viewStorage"
+        />
+    
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/connect_cloud"
+        android:onClick="connectCloud"
+        />
+    
     <Button 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -47,20 +43,6 @@
         android:layout_height="wrap_content"
         android:text="@string/gryphon_monitor"
         android:onClick="monitorGryphon"
-        />
-       
-    <Button 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connect_cloud"
-        android:onClick="connectCloud"
-        />
-       
-    <Button 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/view_logs"
-        android:onClick="viewStorage"
         />
        
 </LinearLayout>
