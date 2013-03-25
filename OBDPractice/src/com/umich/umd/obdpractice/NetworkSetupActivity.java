@@ -354,7 +354,7 @@ public class NetworkSetupActivity extends Activity {
 	private void writeToFile(String data, String filename) {
 		try {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-					openFileOutput(filename, Context.MODE_PRIVATE));
+					openFileOutput(filename, Context.MODE_APPEND));
 			outputStreamWriter.write(data + "\n");
 			outputStreamWriter.close();
 		} catch (IOException e) {
