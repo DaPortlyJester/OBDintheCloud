@@ -12,7 +12,6 @@ public final class R {
     }
     public static final class drawable {
         public static final int dg_tech=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
         public static final int button1=0x7f070002;
@@ -43,7 +42,7 @@ public final class R {
         public static final int activity_view_stored_logs=0x7f060005;
     }
     public static final class string {
-        public static final int N_A=0x7f040020;
+        public static final int N_A=0x7f040021;
         public static final int app_name=0x7f040000;
         public static final int button_connect_cloud=0x7f040009;
         public static final int button_gryphon_monitor=0x7f040008;
@@ -53,44 +52,46 @@ public final class R {
         public static final int button_start_logging=0x7f040007;
         public static final int button_view_logs=0x7f04000a;
         public static final int cancel=0x7f040004;
-        public static final int connect_cloud=0x7f040012;
-        public static final int download_button=0x7f040019;
+        public static final int connect_cloud=0x7f040016;
+        public static final int download_button=0x7f04001d;
         public static final int edit_message=0x7f040001;
         /**  Network Setup Screen Strings 
          */
-        public static final int enter_ip_adress=0x7f040015;
-        public static final int fileContents=0x7f04001e;
+        public static final int enter_ip_adress=0x7f040019;
+        public static final int fileContents=0x7f04001f;
         /**  View Log Files Strings 
          */
-        public static final int filename=0x7f04001d;
-        public static final int gryphon_log_filename=0x7f040017;
-        public static final int gryphon_monitor=0x7f040011;
+        public static final int filename=0x7f04001e;
+        public static final int gryphon_log_filename=0x7f04001b;
+        public static final int gryphon_monitor=0x7f040015;
         /**  Default Hello World Text 
          */
-        public static final int hello_world=0x7f040014;
-        public static final int ip_address=0x7f040016;
-        public static final int list_button=0x7f040018;
-        public static final int list_logfiles=0x7f04001f;
+        public static final int hello_world=0x7f040018;
+        public static final int ip_address=0x7f04001a;
+        public static final int list_button=0x7f04001c;
+        public static final int list_logfiles=0x7f040020;
         /**  Menu Strings 
          */
-        public static final int menu_settings=0x7f04000e;
+        public static final int menu_settings=0x7f040012;
         public static final int no=0x7f040003;
         public static final int ok=0x7f040005;
-        public static final int select_file=0x7f040021;
+        public static final int select_file=0x7f040022;
         /**  Strings for Main Activity Buttons 
          */
-        public static final int setup_network=0x7f04000f;
-        public static final int start_logging=0x7f040010;
-        public static final int title_activity_cloud_file_upload=0x7f040022;
+        public static final int setup_network=0x7f040013;
+        public static final int start_logging=0x7f040014;
+        public static final int title_activity_cloud_file_upload=0x7f040010;
         public static final int title_activity_display_message=0x7f04000c;
-        public static final int title_activity_log_files_list=0x7f04001a;
+        public static final int title_activity_log_files_list=0x7f04000e;
         /**  Activity Titles 
          */
         public static final int title_activity_main=0x7f04000b;
         public static final int title_activity_network_setup=0x7f04000d;
-        public static final int title_activity_read_log_files=0x7f04001c;
-        public static final int title_activity_view_stored_logs=0x7f04001b;
-        public static final int view_logs=0x7f040013;
+        /**  Unused Activity 
+         */
+        public static final int title_activity_read_log_files=0x7f040011;
+        public static final int title_activity_view_stored_logs=0x7f04000f;
+        public static final int view_logs=0x7f040017;
         /**  Dialog Buttons Text 
          */
         public static final int yes=0x7f040002;
