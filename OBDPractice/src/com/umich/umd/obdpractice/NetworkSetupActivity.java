@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 //import android.view.View.OnClickListener;
 //import android.widget.Button;
 //import android.widget.EditText;
@@ -32,52 +33,87 @@ import android.support.v4.app.NavUtils;
 public class NetworkSetupActivity extends Activity {
 
 	/**************************** Network Setup Activity Variables *************************/
+	// Debug tag for identifying from which activity debug message 
+	// originated
 	private static final String DEBUG_TAG = "NetworkConnect";
 	// private static final String SCHEME_TYPE = "http";
+	// Default address for the Gryphon
 	private static final String GRYPH_IP = "http://192.168.0.112";
+	// PHP Script call for grabbing list of log files stored on the Gryphon
 	private static final String LIST_LOG_FILE_SCRIPT = "/sysadmin/playback_action.php";
+	// PHP Script call for downloading a specific log file from the Gryphon
 	private static final String DOWNLOAD_LOG_FILE_SCRIPT = "/sysadmin/log_action.php";
+	// Parameters for listing log files stored on the Gryphon
 	private static final String LIST_LOGS_PARAMS = "?verb=list&uploaddir=/data/&extension=.log";
+	// Parameters for downloading log files stored on the Gryphon
 	private static final String DOWNLOAD_LOG_PARAMS = "?uploaddir=/data/&extension=.log&type=ascii&name=";
+	// Final verb parameter for downloading log files
 	private static final String DOWNLOAD_VERB = "&verb=Download";
+	
+	
+	// Tag to identify json output argument for activity switch
 	private final static String TAG_JSON_OUTPUT = "json_string";
 
+	// Filename for downloaded log files. May contain dupliccates
 	private final static String DOWNLOADED_LOG_FILES = "downloaded_logs";
 
+	// User name and password for Gryphon connection authentication
 	private final static String USERNAME = "sysadmin";
 	private final static String PASSWORD = "dggryphon";
 
+	// Flags for type of request made to the Gryphon
 	private final static int PICK_FILE_REQUEST = 0;
 	private final static int DOWNLOAD_FILE_REQUEST = 1;
+	// Flag generated for the current request from the App
 	private static int CURRENT_REQUEST = 0;
 
+	// Flag for determining if a log file has been chosen for download
 	private boolean log_file_picked = false;
+	// The base name for the most currently selected log file
 	private static String curr_log_file_base_name = null;
+	// The base name for the previously selected log file
 	private static String last_log_file_base_name = null;
 
+	// Debugging flag for Gryphon connection authentication
 	private boolean accessAuthenticated = false;
 
-	private TextView readText;
+	// TextView for displaying Network setup results
+	private TextView displayText;
+	// EditText view for grabbing the IP address of the Gryphon
+	private EditText ipText;
 	/************************* End of Network Setup Activity Variables ********************/
 
 	/************************* File Parsing Variables **************************************/
 
+	// Reader for parsing data read from Gryphon files
 	BufferedReader reader;
-	// InputStream input;
+	// The line currently being read from the log file
 	String line;
+	// Integer conversion of last read line
 	int lineInt;
+	// Data pulled from the log file
 	String date = null;
 	int length;
+	// The vehicle speed pulled from the current line as integer
 	int vehSpd_int;
+	// The vehicle speed pulled from the current line as float
 	float vehSpd_flt;
+	// The engine coolant temperature pulled from the current line as integer
 	int eng_cool_temp_int;
+	// The engine coolant temperature pulled from the current line as float
 	float eng_cool_temp_flt;
+	// The fuel flow from the current line as integer
 	int fuel_flow_int;
+	// The fuel flow from the current line as float
 	float fuel_flow_flt;
+	// Conversion of read vehicle speed as string
 	String vehSpd_str;
+	// Conversion of read vehicle engine coolant temperature as string
 	String eng_cool_temp_str;
+	// Conversion of read fuel flow as string
 	String fuel_flow_str;
 
+	// Lists for holding all read vehicle speeds, eng. coolant temps, and fuel flow values
 	ArrayList<Integer> CAN_VEH_SPD = new ArrayList<Integer>();
 	ArrayList<Integer> CAN_ENG_COOL_TEMP = new ArrayList<Integer>();
 	ArrayList<Float> CAN_FUEL_FLOW = new ArrayList<Float>();
@@ -97,8 +133,12 @@ public class NetworkSetupActivity extends Activity {
 		findViewsById();
 	}
 
+	/**
+	 * Assign View fields to class accessible variables
+	 */
 	private void findViewsById() {
-		readText = (TextView) findViewById(R.id.fileText);
+		displayText = (TextView) findViewById(R.id.fileText);
+		ipText = (EditText) findViewById(R.id.networkIP);		
 	}
 
 	@Override
@@ -278,7 +318,7 @@ public class NetworkSetupActivity extends Activity {
 				startActivityForResult(filesListIntent, PICK_FILE_REQUEST);
 			} else {
 				try {
-					readText.setText("");
+					displayText.setText("");
 					writeToFile(output);
 					parseLogFile(output);
 					FileOutputStream dlLogFile = openFileOutput(
@@ -317,12 +357,12 @@ public class NetworkSetupActivity extends Activity {
 					+ DOWNLOAD_LOG_PARAMS + curr_log_file_base_name
 					+ DOWNLOAD_VERB;
 			Log.d(DEBUG_TAG, "The download URL is:" + downloadLogURLString);
-			readText.setText(downloadLogURLString);
+			displayText.setText(downloadLogURLString);
 			GetXMLTask task = new GetXMLTask();
 			task.execute(new String[] { downloadLogURLString });
 			log_file_picked = false;
 		} else {
-			readText.setText("No File Picked. Please Choose a Log File First");
+			displayText.setText("No File Picked. Please Choose a Log File First");
 		}
 
 	}
@@ -332,7 +372,7 @@ public class NetworkSetupActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				// A file was picked, display it to the user
 				curr_log_file_base_name = data.getStringExtra("file");
-				readText.setText(curr_log_file_base_name);
+				displayText.setText(curr_log_file_base_name);
 				log_file_picked = true;
 			}
 		}
@@ -354,7 +394,7 @@ public class NetworkSetupActivity extends Activity {
 	private void writeToFile(String data, String filename) {
 		try {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-					openFileOutput(filename, Context.MODE_APPEND));
+					openFileOutput(filename, Context.MODE_PRIVATE));
 			outputStreamWriter.write(data + "\n");
 			outputStreamWriter.close();
 		} catch (IOException e) {
@@ -434,9 +474,9 @@ public class NetworkSetupActivity extends Activity {
 			vehSpd_flt = vehSpd_flt / CAN_VEH_SPD.size();
 			vehSpd_flt = (float) Math.round(vehSpd_flt * 100) / 100;
 			vehSpd_str = Float.toString(vehSpd_flt);
-			readText.append("Vehicle Speed ");
-			readText.append(vehSpd_str);
-			readText.append("\n");
+			displayText.append("Vehicle Speed ");
+			displayText.append(vehSpd_str);
+			displayText.append("\n");
 
 			for (int b = 0; b < CAN_ENG_COOL_TEMP.size(); b++) {
 
@@ -445,9 +485,9 @@ public class NetworkSetupActivity extends Activity {
 			}
 			eng_cool_temp_flt = eng_cool_temp_flt / CAN_ENG_COOL_TEMP.size();
 			eng_cool_temp_str = Float.toString(eng_cool_temp_flt);
-			readText.append("Coolant Temp ");
-			readText.append(eng_cool_temp_str);
-			readText.append("\n");
+			displayText.append("Coolant Temp ");
+			displayText.append(eng_cool_temp_str);
+			displayText.append("\n");
 
 			for (int c = 0; c < CAN_FUEL_FLOW.size(); c++) {
 
@@ -456,9 +496,9 @@ public class NetworkSetupActivity extends Activity {
 			}
 			fuel_flow_flt = fuel_flow_flt / CAN_ENG_COOL_TEMP.size();
 			fuel_flow_str = Float.toString(fuel_flow_flt);
-			readText.append("Fuel Flow ");
-			readText.append(fuel_flow_str);
-			readText.append("\n");
+			displayText.append("Fuel Flow ");
+			displayText.append(fuel_flow_str);
+			displayText.append("\n");
 
 		} catch (IOException e) {
 			e.printStackTrace();

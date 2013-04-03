@@ -18,9 +18,15 @@
     <string name="button_view_logs">Logs</string>
 
     <!-- Activity Titles -->
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">OBD In The Cloud</string>
     <string name="title_activity_display_message">My Message</string>
-    <string name="title_activity_network_setup">NetworkSetupActivity</string>
+    <string name="title_activity_network_setup">Download Logs From Gryphon</string>
+    <string name="title_activity_log_files_list">List of Log Files</string>
+    <string name="title_activity_view_stored_logs">View Logs Stored on Device</string>
+    <string name="title_activity_cloud_file_upload">Upload Files To Cloud</string>
+    
+    <!-- Unused Activity -->
+    <string name="title_activity_read_log_files">ReadLogFiles</string>
 
     <!-- Menu Strings -->
     <string name="menu_settings">Settings</string>
@@ -41,9 +47,6 @@
     <string name="gryphon_log_filename">No File Selected</string>
     <string name="list_button">Click To List Gryphon Files</string>
     <string name="download_button">Click to Download Selected File</string>
-    <string name="title_activity_log_files_list">LogFilesList</string>
-    <string name="title_activity_view_stored_logs">ViewStoredLogs</string>
-    <string name="title_activity_read_log_files">ReadLogFiles</string>
 
     <!-- View Log Files Strings -->
     <string name="filename">No File Chosen</string>
@@ -51,6 +54,5 @@
     <string name="list_logfiles">Click to Select Another Log File</string>
     <string name="N_A">Done Viewing Files</string>
     <string name="select_file">Select a file</string>
-    <string name="title_activity_cloud_file_upload">CloudFileUpload</string>
 
 </resources>

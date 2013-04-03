@@ -21,16 +21,19 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	// Debug tag for identifying from which activity debug message 
+	// Debug tag for identifying from which activity debug message
 	// originated
 	private final static String DEBUG_TAG = "OBDMainAct";
-	// The SSID for the OBD Network
-	private final static String OBD_SSID = "OBD";
+
+	private ManageConnection manageConnect;
 
 	// The network ID before networkID was switched to OBD Network
 	private int initialNetworkID;
 	// Whether the network state was changed
 	private boolean networkStateChanged = false;
+
+	private final static int WIFI_ORIGIN = 0;
+	private final static int DATA_ORIGIN = 1;
 
 	/**
 	 * Called each time activity is created (including on screen orientation
@@ -40,6 +43,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		manageConnect = new ManageConnection();
 	}
 
 	/**
@@ -65,93 +69,17 @@ public class MainActivity extends Activity {
 	 */
 	public void setupNetwork(View view) {
 
-		// Grab connection information
-		ConnectivityManager conMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		NetworkInfo wifiConnectInfo = conMgr
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-		// Grab Wifi connection information
-		WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-
 		/*
 		 * Check if Wifi Connection is detected If not, display alert dialog to
 		 * switch to turn on Wifi and select OBD network
 		 */
-		if (wifiConnectInfo.isConnected()) {
-
-			/*
-			 * Check if current wifi network is OBD Network, if not Check for
-			 * the OBD network among current WifiConfigurations If found, switch
-			 * to OBD Network
-			 */
-
-			Log.d(DEBUG_TAG, "The current Wifi SSID is: " + wifiInfo.getSSID());
-			initialNetworkID = wifiInfo.getNetworkId();
-
-			if (!wifiInfo.getSSID().equals(OBD_SSID)) {
-				// Grab list of all current user configured networks
-				List<WifiConfiguration> wifiList = wifiMgr
-						.getConfiguredNetworks();
-
-				// Iterate through configured networks, if OBD network is found
-				// switch to it
-				// Mark network state changed to true
-				for (WifiConfiguration result : wifiList) {
-
-					/*
-					 * In Wifi Configuration, SSID surround with quotes
-					 * Consider storing matched networkID so this process is
-					 * not necessary every time log files are downloaded from
-					 * Gryphon
-					 */
-					if (result.SSID != null
-							&& result.SSID.equals("\"" + OBD_SSID + "\"")) {
-						// Disconnect wifi before switching
-						wifiMgr.disconnect();
-						// Switch to matched SSID
-						wifiMgr.enableNetwork(result.networkId, true);
-						wifiMgr.reconnect();
-						networkStateChanged = true;
-					}
-				}
-			}
+		if (manageConnect.obdWIFIconnected(getApplicationContext())) {
 
 			// Switch to NetworkSetupActivity
 			Intent intent = new Intent(this, NetworkSetupActivity.class);
 			startActivity(intent);
 		} else {
-
-			/*
-			 * If Wifi is not connected, build AlertDialog to alert user that
-			 * they should configure network
-			 */
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			// TextView to hold alert message
-			TextView noWifiMsg = new TextView(this);
-			noWifiMsg
-					.setText("No Wifi Connection Found\nPlease go to Wifi Settings and\n"
-							+ " choose the OBD Wifi Connection");
-			// Center message in TextView
-			noWifiMsg.setGravity(Gravity.CENTER);
-			// Add TextView to AlertDialog and setup Buttons with listener
-			builder.setView(noWifiMsg)
-					.setCancelable(false)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.cancel();
-
-								}
-							});
-
-			// Create/instantiate actual AlertDialog
-			AlertDialog dialog = builder.create();
-			// Show the dialog to the user, spawned on separate thread
-			dialog.show();
+			showAlert(WIFI_ORIGIN);
 		}
 	}
 
@@ -181,8 +109,15 @@ public class MainActivity extends Activity {
 	 *            The view where the click originated
 	 */
 	public void connectCloud(View view) {
-		Intent intent = new Intent(this, CloudFileUpload.class);
-		startActivity(intent);
+
+		if (manageConnect.networkConnected(getApplicationContext())) {
+
+			Intent intent = new Intent(this, CloudFileUpload.class);
+			startActivity(intent);
+		} else {
+			showAlert(DATA_ORIGIN);
+		}
+
 	}
 
 	/**
@@ -204,15 +139,60 @@ public class MainActivity extends Activity {
 	 */
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		if (networkStateChanged) {
+		// Check for network state change, if changed, reset to initial network
+		if (manageConnect.networkStateChanged) {
 			WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 			wifiMgr.disconnect();
-			wifiMgr.enableNetwork(initialNetworkID, true);
+			wifiMgr.enableNetwork(manageConnect.initialNetworkID, true);
 			wifiMgr.reconnect();
 		}
 
 		super.onDestroy();
+	}
+
+	private void showAlert(int alertOrigin) {
+
+		/*
+		 * If Wifi is not connected, build AlertDialog to alert user that they
+		 * should configure network
+		 */
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// TextView to hold alert message
+		TextView noWifiMsg = new TextView(this);
+		
+		// Change alert message based on origin
+		if (alertOrigin == WIFI_ORIGIN) {
+			noWifiMsg
+					.setText("No Wifi Connection Found\nPlease go to Wifi Settings and\n"
+							+ " choose the OBD Wifi Connection");
+		} else if (alertOrigin == DATA_ORIGIN) {
+			noWifiMsg
+					.setText("No Cellular Data Connection Found\n Please turn on Cellular Data"
+							+ " connection or wait for connection");
+		}
+		
+		// Center message in TextView
+		noWifiMsg.setGravity(Gravity.CENTER);
+		// Add TextView to AlertDialog and setup Buttons with listener
+		builder.setView(noWifiMsg)
+				.setCancelable(false)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+
+							}
+						});
+
+		// Create/instantiate actual AlertDialog
+		AlertDialog dialog = builder.create();
+		// Show the dialog to the user, spawned on separate thread
+		dialog.show();
+
 	}
 
 }
