@@ -1,88 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.umich.umd.obdpractice"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.umich.umd.obdpractice">
 
-    <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="16" />
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="16"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/dg_tech"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.umich.umd.obdpractice.MainActivity"
-            android:label="@string/app_name" >
+    <permission android:name="com.umich.umd.obdpractice.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+
+   <uses-permission android:name="com.umich.umd.obdpractice.permission.C2D_MESSAGE"/>
+   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+   <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+   <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+   <application android:allowBackup="true" android:icon="@drawable/dg_tech" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:label="@string/app_name" android:name="com.umich.umd.obdpractice.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_display_message" android:name="com.umich.umd.obdpractice.DisplayMessageActivity" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.NetworkSetupActivity"
-            android:label="@string/title_activity_network_setup"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_network_setup" android:name="com.umich.umd.obdpractice.NetworkSetupActivity" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.LogFilesList"
-            android:label="@string/title_activity_log_files_list"
-            android:parentActivityName="android.app.ListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.app.ListActivity" />
+        <activity android:label="@string/title_activity_log_files_list" android:name="com.umich.umd.obdpractice.LogFilesList" android:parentActivityName="android.app.ListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="android.app.ListActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.ViewStoredLogs"
-            android:label="@string/title_activity_view_stored_logs"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_view_stored_logs" android:name="com.umich.umd.obdpractice.ViewStoredLogs" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.ViewStoredLogsActivity"
-            android:label="@string/title_activity_view_stored_logs"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_view_stored_logs" android:name="com.umich.umd.obdpractice.ViewStoredLogsActivity" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.ReadLogFiles"
-            android:label="@string/title_activity_read_log_files"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_read_log_files" android:name="com.umich.umd.obdpractice.ReadLogFiles" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity
-            android:name="com.umich.umd.obdpractice.CloudFileUpload"
-            android:label="@string/title_activity_cloud_file_upload"
-            android:parentActivityName="com.umich.umd.obdpractice.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.umich.umd.obdpractice.MainActivity" />
+        <activity android:label="@string/title_activity_cloud_file_upload" android:name="com.umich.umd.obdpractice.CloudFileUpload" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-    </application>
+        <service android:name=".GCMIntentService"/>
+        <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="com.umich.umd.obdpractice"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <category android:name="com.umich.umd.obdpractice"/>
+            </intent-filter>
+        </receiver>
+    
+        <activity android:launchMode="singleTop" android:name=".RegisterActivity"/>
+</application>
 
 </manifest>

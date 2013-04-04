@@ -37,7 +37,7 @@ public class SelectFilesDialogFragment extends DialogFragment {
 				Log.d(DEBUG_TAG, "File Index " + fileIndex);
 				String fileName = fileList.get(which);
 				Log.d(DEBUG_TAG, "File Name: " + fileName);
-				((ViewStoredLogsActivity)getActivity()).writeToScreen(fileList.get(which));
+				((ViewStoredLogsActivity)getActivity()).writeToScreen(fileName);
 			}
 		});
 		

@@ -9,9 +9,11 @@ import java.util.HashSet;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -26,7 +28,12 @@ public class CloudFileUpload extends Activity {
 	private final static String LIST_KEY = "filesList";
 
 	// points to file title bar in view
-	private TextView fileTitle;
+	private static TextView fileTitle;
+
+	// The base name for the most currently selected log file
+	private static String curr_log_file_base_name = null;
+	// The base name for the previously selected log file
+	private static String last_log_file_base_name = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +42,25 @@ public class CloudFileUpload extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		// Assign view IDs to variables fileTitle and fileContent
+		findViewsById();
+
 		// Build SelectFiles fragment for selecting files
-		SelectFilesDialogFragment selectFiles =  new SelectFilesDialogFragment();
+		SelectFilesFragment selectFiles = new SelectFilesFragment();
 		// bundle to send to select file fragment storing file arraylist
 		Bundle listBundle = new Bundle();
 		// add arrayList to bundle
-		listBundle.putStringArrayList(LIST_KEY, new ArrayList<String>(getLogFileList()));
+		listBundle.putStringArrayList(LIST_KEY, new ArrayList<String>(
+				getLogFileList()));
 		// set bundle to dialog fragment argument
 		selectFiles.setArguments(listBundle);
 		// show dialog fragment
 		selectFiles.show(getFragmentManager(), "dialog");
+	}
+	
+	private void findViewsById() {
+		// assign file_name TextView to fileTitle
+		fileTitle = (TextView) findViewById(R.id.cloud_file_name);
 	}
 
 	@Override
@@ -70,44 +86,71 @@ public class CloudFileUpload extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private HashSet<String> getLogFileList() {
-		
+
 		// BufferedReader for reading from logfile list file
 		BufferedReader logListReader = null;
 		// Last line read from BufferedReader, should be one filename
 		String readLine;
 		// HashSet to store filenames
-		HashSet<String> logFileNames = new HashSet<String>();		
-		
+		HashSet<String> logFileNames = new HashSet<String>();
+
 		try {
 			// Create input stream from DOWNLOADED_LOG_FILES file
-			logListReader = new BufferedReader( new InputStreamReader(
+			logListReader = new BufferedReader(new InputStreamReader(
 					openFileInput(DOWNLOADED_LOG_FILES)));
-			
-			while((readLine = logListReader.readLine()) != null)
-			{
+
+			while ((readLine = logListReader.readLine()) != null) {
 				Log.d(DEBUG_TAG, "Added FileName " + readLine);
 				// add each filename to HashSet, duplicates are discarded
 				logFileNames.add(readLine);
 			}
-			
-		} catch(FileNotFoundException ex) {
+
+		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		finally {
-			
+		} finally {
+
 			try {
 				logListReader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		return logFileNames;
-		
+
 	}
+	
+	public void uploadFile(View view) {
+		CloudManager fileUploader = new CloudManager();
+		try {
+			fileUploader.fileInsert(curr_log_file_base_name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	public static String getCurr_log_file_base_name() {
+		return curr_log_file_base_name;
+	}
+
+	public static void setCurr_log_file_base_name(String curr_log_file_base_name) {
+		CloudFileUpload.curr_log_file_base_name = curr_log_file_base_name;
+		fileTitle.setText(curr_log_file_base_name);
+	}
+
+	public static String getLast_log_file_base_name() {
+		return last_log_file_base_name;
+	}
+
+	public static void setLast_log_file_base_name(String last_log_file_base_name) {
+		CloudFileUpload.last_log_file_base_name = last_log_file_base_name;
+	}
+	
 
 }

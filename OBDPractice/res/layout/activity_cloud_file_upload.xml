@@ -5,10 +5,20 @@
     tools:context=".CloudFileUpload" >
 
     <TextView
+        android:id="@+id/cloud_file_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:text="@string/filename" />
+    
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/cloud_file_name"
+        android:onClick="uploadFile"
+        android:text="@string/uploadSelectedFile" />
 
 </RelativeLayout>

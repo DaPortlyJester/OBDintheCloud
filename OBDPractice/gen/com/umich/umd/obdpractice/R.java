@@ -14,15 +14,19 @@ public final class R {
         public static final int dg_tech=0x7f020000;
     }
     public static final class id {
-        public static final int button1=0x7f070002;
-        public static final int cancel_button=0x7f070007;
-        public static final int fileText=0x7f070003;
-        public static final int file_name=0x7f070004;
-        public static final int ipAddress=0x7f070000;
-        public static final int logfile_contents=0x7f070005;
-        public static final int menu_settings=0x7f070008;
-        public static final int networkIP=0x7f070001;
-        public static final int select_logfiles=0x7f070006;
+        public static final int button1=0x7f070001;
+        public static final int cancel_button=0x7f07000b;
+        public static final int cloud_file_name=0x7f070000;
+        public static final int fileText=0x7f070004;
+        public static final int file_name=0x7f070008;
+        public static final int ipAddress=0x7f070002;
+        public static final int linearLayout1=0x7f070005;
+        public static final int linearLayout3=0x7f070006;
+        public static final int logfile_contents=0x7f070009;
+        public static final int menu_settings=0x7f07000c;
+        public static final int networkIP=0x7f070003;
+        public static final int regButton=0x7f070007;
+        public static final int select_logfiles=0x7f07000a;
     }
     public static final class layout {
         public static final int activity_cloud_file_upload=0x7f030000;
@@ -30,8 +34,9 @@ public final class R {
         public static final int activity_main=0x7f030002;
         public static final int activity_network_setup=0x7f030003;
         public static final int activity_read_log_files=0x7f030004;
-        public static final int activity_view_stored_logs=0x7f030005;
-        public static final int list_item=0x7f030006;
+        public static final int activity_register=0x7f030005;
+        public static final int activity_view_stored_logs=0x7f030006;
+        public static final int list_item=0x7f030007;
     }
     public static final class menu {
         public static final int activity_cloud_file_upload=0x7f060000;
@@ -39,7 +44,8 @@ public final class R {
         public static final int activity_main=0x7f060002;
         public static final int activity_network_setup=0x7f060003;
         public static final int activity_read_log_files=0x7f060004;
-        public static final int activity_view_stored_logs=0x7f060005;
+        public static final int activity_register=0x7f060005;
+        public static final int activity_view_stored_logs=0x7f060006;
     }
     public static final class string {
         public static final int N_A=0x7f040021;
@@ -91,6 +97,9 @@ public final class R {
          */
         public static final int title_activity_read_log_files=0x7f040011;
         public static final int title_activity_view_stored_logs=0x7f04000f;
+        /**  Cloud File Upload Strings 
+         */
+        public static final int uploadSelectedFile=0x7f040023;
         public static final int view_logs=0x7f040017;
         /**  Dialog Buttons Text 
          */
