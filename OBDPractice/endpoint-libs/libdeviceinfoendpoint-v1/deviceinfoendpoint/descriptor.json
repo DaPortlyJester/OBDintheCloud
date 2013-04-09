@@ -1,11 +1,11 @@
 {
   "files": [
     {
-      "path": "myapp-deviceinfoendpoint-v1-20130404144724-java-1.14.1-beta-sources.jar", 
+      "path": "myapp-deviceinfoendpoint-v1-20130405025448-java-1.14.1-beta-sources.jar", 
       "type": "source"
     }, 
     {
-      "path": "myapp-deviceinfoendpoint-v1-20130404144724-java-1.14.1-beta.jar.properties", 
+      "path": "myapp-deviceinfoendpoint-v1-20130405025448-java-1.14.1-beta.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -687,7 +687,7 @@
     }
   ], 
   "language_version": "1.14.1-beta", 
-  "revision": 20130404144724, 
+  "revision": 20130405025448, 
   "id": "deviceinfoendpoint:v1", 
   "name": "deviceinfoendpoint"
 }

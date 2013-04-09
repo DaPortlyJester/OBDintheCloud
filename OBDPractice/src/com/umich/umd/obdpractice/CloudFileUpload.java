@@ -9,6 +9,7 @@ import java.util.HashSet;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
+
+import com.google.android.gms.*;
 
 public class CloudFileUpload extends Activity {
 
@@ -44,6 +47,9 @@ public class CloudFileUpload extends Activity {
 		
 		// Assign view IDs to variables fileTitle and fileContent
 		findViewsById();
+		
+		Intent intent = AccountPicker.newChooseAccountIntent(null,null, new String[]{"com.google"},
+				false, null, null, null,null);
 
 		// Build SelectFiles fragment for selecting files
 		SelectFilesFragment selectFiles = new SelectFilesFragment();
@@ -127,7 +133,7 @@ public class CloudFileUpload extends Activity {
 	public void uploadFile(View view) {
 		CloudManager fileUploader = new CloudManager();
 		try {
-			fileUploader.fileInsert(curr_log_file_base_name);
+			fileUploader.fileInsert(curr_log_file_base_name,getApplicationContext());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

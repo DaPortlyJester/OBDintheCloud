@@ -10,11 +10,11 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
@@ -23,10 +23,7 @@ import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.api.services.storage.Storage;
-import com.google.api.services.storage.model.StorageObject;
-import com.google.common.base.Preconditions;
-import com.google.common.io.Files;
+
 
 public class CloudManager {
 
@@ -59,73 +56,13 @@ public class CloudManager {
 
 	
 	
-	public void fileInsert(String fileName) throws IOException {
+	public void fileInsert(String fileName, Context cloudActContext) throws IOException {
 
-		File file = new File(fileName);
-		FileInputStream fis;
-
-		InputStream in = null;
-		long byteCount;
-
-		/*Preconditions
-				.checkArgument(
-						!SERVICE_ACCOUNT_EMAIL.startsWith("[["),
-						"Please enter your service account e-mail from the Google APIs "
-								+ "Console to the SERVICE_ACCOUNT_EMAIL constant in %s",
-						CloudManager.class.getName());
-		Preconditions.checkArgument(!BUCKET_NAME.startsWith("[["),
-				"Please enter your desired Google Cloud Storage bucket name "
-						+ "to the BUCKET_NAME constant in %s",
-				CloudManager.class.getName());
-		String p12Content = Files.readFirstLine(new File("key.p12"),
-				Charset.defaultCharset());
-		Preconditions.checkArgument(!p12Content.startsWith("Please"),
-				p12Content);*/
-
-		try {
-			
-	        // Build service account credential.
-	        GoogleCredential credential = 
-	          new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT)
-	            .setJsonFactory(JSON_FACTORY)
-	            .setServiceAccountId(SERVICE_ACCOUNT_EMAIL)
-	            .setServiceAccountScopes(STORAGE_SCOPE).build();
-	            
-	        String URI = GCS_URI + BUCKET_NAME;
-	        HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
-	        GenericUrl url = new GenericUrl(URI);
-	        /*//HttpContent content;
-			HttpRequest request =  requestFactory.buildPutRequest(url, content);
-	        HttpResponse response = request.execute();*/
-	        
-	            
-			in = new BufferedInputStream(fis = new FileInputStream(file));
-			InputStreamContent mediaContent = new InputStreamContent(
-					"application/octet-steam", in);
-
-			byteCount = fis.getChannel().size();
-			Log.d(DEBUG_TAG, "File Size: " + byteCount);
-
-			mediaContent.setLength(byteCount);
-			StorageObject objectMetadata = null;
-
-			// Storage.Objects.Insert insertObject = storage.objects().insert(
-			// "obd_data", objectMetadata, mediaContent);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (in != null)
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
-
+		Log.d(DEBUG_TAG, fileName);
+		
+		PutHTTPTask upFileTask = new PutHTTPTask(cloudActContext);
+		upFileTask.execute(new String[] {fileName});
+		
 	}
 
 }

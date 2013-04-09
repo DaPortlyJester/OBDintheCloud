@@ -54,7 +54,7 @@ public class NetworkSetupActivity extends Activity {
 	// Tag to identify json output argument for activity switch
 	private final static String TAG_JSON_OUTPUT = "json_string";
 
-	// Filename for downloaded log files. May contain dupliccates
+	// Filename for downloaded log files. May contain duplicates
 	private final static String DOWNLOADED_LOG_FILES = "downloaded_logs";
 
 	// User name and password for Gryphon connection authentication
