@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 import com.google.android.gms.*;
+import com.google.android.gms.common.AccountPicker;
 
 public class CloudFileUpload extends Activity {
 

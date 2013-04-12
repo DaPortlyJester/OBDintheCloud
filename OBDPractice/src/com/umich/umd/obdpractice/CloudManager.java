@@ -29,7 +29,7 @@ public class CloudManager {
 
 	// Debug tag for identifying from which activity debug message
 	// originated
-	private final static String DEBUG_TAG = "CloudManag";
+	private final static String DEBUG_TAG = "CloudManage";
 
 	/** E-mail address of the service account. */
 	private static final String SERVICE_ACCOUNT_EMAIL = "Derelle.Redmond@gmail.com";

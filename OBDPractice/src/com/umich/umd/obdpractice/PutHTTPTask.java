@@ -91,8 +91,8 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 	public String fileUpload(String fileName, Context cloudActContext)
 			throws IOException {
 		
-		String authorizeURL = new GoogleAuthorizationRequestURL(CLIENT_ID,
-				CALLBACK_URL,STORAGE_SCOPE);
+//		String authorizeURL = new GoogleAuthorizationRequestURL(CLIENT_ID,
+//				CALLBACK_URL,STORAGE_SCOPE);
 
 		Log.d(DEBUG_TAG, fileName);
 		FileInputStream fis = cloudActContext.openFileInput(fileName);
@@ -142,7 +142,6 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 
 			HttpRequest request = requestFactory.buildPutRequest(url,
 					mediaContent);
-			request.
 			HttpResponse response = request.execute();
 
 			return response.parseAsString();
