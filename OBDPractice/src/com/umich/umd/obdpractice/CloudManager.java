@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.internal.au;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -26,13 +27,16 @@ import com.google.api.client.json.jackson.JacksonFactory;
 
 
 public class CloudManager {
+	
 
 	// Debug tag for identifying from which activity debug message
 	// originated
 	private final static String DEBUG_TAG = "CloudManage";
 
 	/** E-mail address of the service account. */
-	private static final String SERVICE_ACCOUNT_EMAIL = "Derelle.Redmond@gmail.com";
+	private static String SERVICE_ACCOUNT_EMAIL;
+	public final static String ACCOUNT_TAG = "Account_Email"; 
+	private final static String DEFAULT_EMAIL = "Derelle.Redmond@gmail.com";
 	
 	/** Google Cloud Storage URI */
 	private static final String GCS_URI = "http://storage.googleapis.com/";
@@ -49,18 +53,29 @@ public class CloudManager {
 	/** Global instance of the JSON factory. */
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
-/*	private FileWriteChannel writeChannel = null;
-	FileService fileService =  FileServiceFactory.getFileService();
-	private OutputStream os = null;
-	private static final Logger log =  Logger.getLogger(CloudManager.class.getName());*/
+	protected CloudFileUpload cupActivity;
+	
+	/**
+	 * Constructor for sending Cloud authentication account information.
+	 * If a null value is passed, uses default email address 
+	 * @param cloudFileUpload 
+	 * 
+	 * @param authentication_account The string name of the account to authenticate with
+	 * 
+	 */
+	public CloudManager(CloudFileUpload cloudFileUpload, String authentication_account) {
+		cupActivity = cloudFileUpload;
+		if(!(authentication_account == null))
+			SERVICE_ACCOUNT_EMAIL = authentication_account;
+		else
+			SERVICE_ACCOUNT_EMAIL = DEFAULT_EMAIL;
+	}
 
-	
-	
 	public void fileInsert(String fileName, Context cloudActContext) throws IOException {
 
 		Log.d(DEBUG_TAG, fileName);
 		
-		PutHTTPTask upFileTask = new PutHTTPTask(cloudActContext);
+		PutHTTPTask upFileTask = new PutHTTPTask(cupActivity, cloudActContext,SERVICE_ACCOUNT_EMAIL);
 		upFileTask.execute(new String[] {fileName});
 		
 	}
