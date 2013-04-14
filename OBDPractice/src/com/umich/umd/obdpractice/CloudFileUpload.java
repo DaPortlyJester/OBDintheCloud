@@ -2,14 +2,17 @@ package com.umich.umd.obdpractice;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import android.os.Bundle;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -103,6 +106,7 @@ public class CloudFileUpload extends Activity {
 
 		// BufferedReader for reading from logfile list file
 		BufferedReader logListReader = null;
+		OutputStreamWriter osw = null;
 		// Last line read from BufferedReader, should be one filename
 		String readLine;
 		// HashSet to store filenames
@@ -118,7 +122,12 @@ public class CloudFileUpload extends Activity {
 				// add each filename to HashSet, duplicates are discarded
 				logFileNames.add(readLine);
 			}
-
+			
+			osw = new OutputStreamWriter(openFileOutput(DOWNLOADED_LOG_FILES,Context.MODE_PRIVATE));
+			
+			for(String fileName : logFileNames) {
+				osw.write(fileName + "\n");
+			}
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (IOException e) {
@@ -127,10 +136,10 @@ public class CloudFileUpload extends Activity {
 
 			try {
 				logListReader.close();
+				osw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 		return logFileNames;
 

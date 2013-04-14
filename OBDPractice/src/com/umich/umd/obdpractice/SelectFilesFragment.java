@@ -31,7 +31,6 @@ public class SelectFilesFragment extends DialogFragment{
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				
 				fileIndex = which;
 				Log.d(DEBUG_TAG, "File Index " + fileIndex);

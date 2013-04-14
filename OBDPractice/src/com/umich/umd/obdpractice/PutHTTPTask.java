@@ -49,7 +49,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 	/** Google Cloud Storage URI */
 	private static final String GCS_URI = "http://storage.googleapis.com/";
 
-	private static final String HOST = "storage.googleapis.com/obd_data";
+	private static final String HOST = "storage.googleapis.com";
 	/** Bucket to list. */
 	private static final String BUCKET_NAME = "obd_data";
 
@@ -224,7 +224,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 			httpConnection.setRequestMethod("PUT");
 			httpConnection.setDoInput(true);
 			httpConnection.setDoOutput(true);
-			Log.d(DEBUG_TAG, "OAuth" + token);
+			Log.d(DEBUG_TAG, "OAuth " + token);
 			httpConnection
 					.addRequestProperty("Authorization", "OAuth " + token);
 			httpConnection.addRequestProperty("Content-Length",
