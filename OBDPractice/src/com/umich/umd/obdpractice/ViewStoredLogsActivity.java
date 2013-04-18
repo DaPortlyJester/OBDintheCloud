@@ -122,7 +122,7 @@ public class ViewStoredLogsActivity extends Activity {
 			{
 				Log.d(DEBUG_TAG, "Added FileName " + readLine);
 				// add each filename to HashSet, duplicates are discarded
-				logFileNames.add(readLine);
+				logFileNames.add(NetworkSetupActivity.PARSED_PREFIX + readLine);
 			}
 			
 		} catch(FileNotFoundException ex) {

@@ -76,7 +76,7 @@ public class CloudManager {
 		Log.d(DEBUG_TAG, fileName);
 		
 		PutHTTPTask upFileTask = new PutHTTPTask(cupActivity, cloudActContext,SERVICE_ACCOUNT_EMAIL);
-		upFileTask.execute(new String[] {fileName,"parsed" + fileName});
+		upFileTask.execute(new String[] {fileName,NetworkSetupActivity.PARSED_PREFIX + fileName});
 		
 	}
 
