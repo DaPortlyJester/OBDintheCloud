@@ -11,37 +11,39 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 public class ManageConnection {
-	
-	// Debug tag for identifying from which activity debug message 
+
+	// Debug tag for identifying from which activity debug message
 	// originated
 	private final static String DEBUG_TAG = "ManageConnect";
-	
+
 	// The SSID for the OBD Network
 	private final static String OBD_SSID = "OBD";
-	
+
 	// The network ID before networkID was switched to OBD Network
 	public int initialNetworkID;
 	// Whether the network state was changed
 	public boolean networkStateChanged = false;
-	
+
 	private ConnectivityManager conMgr;
-	
+
 	private NetworkInfo wifiConnectInfo;
-	
+	private NetworkInfo mobileNetInfo;
+
 	private WifiManager wifiMgr;
-	
+
 	private WifiInfo wifiInfo;
-	
+
 	public boolean obdWIFIconnected(Context appContext) {
-		
+
 		// Grab connection information
-		
-		conMgr = (ConnectivityManager)appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		wifiConnectInfo = conMgr
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		conMgr = (ConnectivityManager) appContext
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		wifiConnectInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		// Grab Wifi connection information
-		wifiMgr = (WifiManager)appContext.getSystemService(Context.WIFI_SERVICE);
+		wifiMgr = (WifiManager) appContext
+				.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiMgr.getConnectionInfo();
 
 		/*
@@ -70,9 +72,9 @@ public class ManageConnection {
 				for (WifiConfiguration result : wifiList) {
 
 					/*
-					 * In Wifi Configuration, SSID surround with quotes
-					 * Consider storing matched networkID so this process is
-					 * not necessary every time log files are downloaded from
+					 * In Wifi Configuration, SSID surround with quotes Consider
+					 * storing matched networkID so this process is not
+					 * necessary every time log files are downloaded from
 					 * Gryphon
 					 */
 					if (result.SSID != null
@@ -93,19 +95,23 @@ public class ManageConnection {
 	}
 
 	public boolean networkConnected(Context appContext) {
-		
-		conMgr = (ConnectivityManager)appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
+
+		conMgr = (ConnectivityManager) appContext
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
 		Log.d(DEBUG_TAG, "Net avail:"
-                + conMgr.getActiveNetworkInfo().isConnectedOrConnecting());
-		
-		NetworkInfo mobileNetInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		
-		if(mobileNetInfo != null && mobileNetInfo.isConnectedOrConnecting()) {
+				+ conMgr.getActiveNetworkInfo().isConnectedOrConnecting());
+
+		mobileNetInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		wifiConnectInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if ((mobileNetInfo != null && mobileNetInfo.isConnectedOrConnecting())
+				|| (wifiConnectInfo != null && wifiConnectInfo
+						.isConnectedOrConnecting())) {
 			Log.d(DEBUG_TAG, "Data Connection Available");
 			return true;
 		}
-		
+
 		return false;
 	}
 }

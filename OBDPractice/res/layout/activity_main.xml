@@ -4,45 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
+    android:paddingTop="8dp"
     tools:context=".MainActivity"
     tools:ignore="ExtraText" >
-    
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/setup_network"
-        android:onClick="setupNetwork"
-        />
-       
-	<Button 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/view_logs"
-        android:onClick="viewStorage"
-        />
-    
-    <Button 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connect_cloud"
-        android:onClick="connectCloud"
-        />
-    
-    <Button 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_logging"
-        android:onClick="startLogging" 
-        />
-    
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/gryphon_monitor"
-        android:onClick="monitorGryphon"
-        />
-       
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="setupNetwork"
+            android:text="@string/setup_network" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="viewStorage"
+            android:text="@string/view_logs" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="connectCloud"
+            android:text="@string/connect_cloud" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="174dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.94"
+        android:contentDescription="@string/umichDesc"
+        android:src="@drawable/block_umich_cecs" />
+
 </LinearLayout>

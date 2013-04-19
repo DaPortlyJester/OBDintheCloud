@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.os.Bundle;
 import android.accounts.AccountManager;
@@ -25,7 +28,7 @@ import android.support.v4.app.NavUtils;
 import com.google.android.gms.*;
 import com.google.android.gms.common.AccountPicker;
 
-public class CloudFileUpload extends Activity {
+public class CloudFileUploadActivity extends Activity {
 
 	// Name of file where filenames of downloaded files are stored
 	private final static String DOWNLOADED_LOG_FILES = "downloaded_logs";
@@ -34,11 +37,16 @@ public class CloudFileUpload extends Activity {
 	private final static String DEBUG_TAG = "CloudUpload";
 	// Key for specifying which arraylist in bundle is the file list
 	private final static String LIST_KEY = "filesList";
-	
+
 	private final static int ACCOUNT_REQUEST_CODE = 1;
+	
+	private final static String NEW_UPLOAD = "Upload not intiated";
 
 	// points to file title bar in view
-	private static TextView fileTitle;
+	private static TextView file_title;
+	private static TextView auth_account;
+	private static TextView resp_code;
+	private static TextView resp_content;
 
 	private static String authentication_account;
 	// The base name for the most currently selected log file
@@ -52,30 +60,24 @@ public class CloudFileUpload extends Activity {
 		setContentView(R.layout.activity_cloud_file_upload);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		// Assign view IDs to variables fileTitle and fileContent
 		findViewsById();
-		
-		Intent intent = AccountPicker.newChooseAccountIntent(null,null, new String[]{"com.google"},
-				false, null, null, null,null);
+
+		Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+				new String[] { "com.google" }, false, null, null, null, null);
 		startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
 
-		// Build SelectFiles fragment for selecting files
-		SelectFilesFragment selectFiles = new SelectFilesFragment();
-		// bundle to send to select file fragment storing file arraylist
-		Bundle listBundle = new Bundle();
-		// add arrayList to bundle
-		listBundle.putStringArrayList(LIST_KEY, new ArrayList<String>(
-				getLogFileList()));
-		// set bundle to dialog fragment argument
-		selectFiles.setArguments(listBundle);
-		// show dialog fragment
-		selectFiles.show(getFragmentManager(), "dialog");
+		generateFileSelectDialog();
 	}
-	
+
 	private void findViewsById() {
 		// assign file_name TextView to fileTitle
-		fileTitle = (TextView) findViewById(R.id.cloud_file_name);
+		file_title = (TextView) findViewById(R.id.cloud_file_name);
+		auth_account = (TextView) findViewById(R.id.auth_account);
+		resp_code = (TextView) findViewById(R.id.resp_code);
+		resp_content = (TextView) findViewById(R.id.resp_content);
+
 	}
 
 	@Override
@@ -122,10 +124,11 @@ public class CloudFileUpload extends Activity {
 				// add each filename to HashSet, duplicates are discarded
 				logFileNames.add(readLine);
 			}
-			
-			osw = new OutputStreamWriter(openFileOutput(DOWNLOADED_LOG_FILES,Context.MODE_PRIVATE));
-			
-			for(String fileName : logFileNames) {
+
+			osw = new OutputStreamWriter(openFileOutput(DOWNLOADED_LOG_FILES,
+					Context.MODE_PRIVATE));
+
+			for (String fileName : logFileNames) {
 				osw.write(fileName + "\n");
 			}
 		} catch (FileNotFoundException ex) {
@@ -144,34 +147,73 @@ public class CloudFileUpload extends Activity {
 		return logFileNames;
 
 	}
-	
+
 	public void uploadFile(View view) {
-		CloudManager fileUploader = new CloudManager(CloudFileUpload.this,authentication_account);
+		CloudManager fileUploader = new CloudManager(
+				CloudFileUploadActivity.this, authentication_account);
 		try {
-			fileUploader.fileInsert(curr_log_file_base_name,getApplicationContext());
+			resp_code.setText("Uploading ...");
+			resp_content.setText("Uploading ...");
+			fileUploader.fileInsert(curr_log_file_base_name,
+					getApplicationContext());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-	{
-		if(requestCode == ACCOUNT_REQUEST_CODE && resultCode == RESULT_OK) {
+
+	protected void onActivityResult(final int requestCode,
+			final int resultCode, final Intent data) {
+		if (requestCode == ACCOUNT_REQUEST_CODE && resultCode == RESULT_OK) {
 			setAccountName(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
 		}
 	}
-	
+
 	public void show(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				fileTitle.setText(fileTitle.getText() + message);
+				resp_code.setText(message);
 			}
 		});
 	}
-	
+
+	public void updateDisplay(final String respCon) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				resp_content.setText(respCon);
+			}
+
+		});
+	}
+
+	public void updateDisplay(final Map<String, List<String>> headers) {
+
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				StringBuilder sb = new StringBuilder();
+				List<String> currHeaderList;
+				Set<String> keys = headers.keySet();
+				for (String k : keys) {
+					sb.append(k + ": ");
+					currHeaderList = headers.get(k);
+					for (String header : currHeaderList) {
+						sb.append(header + " ");
+					}
+					sb.append("\n");
+				}
+				resp_content.setText(sb.toString());
+			}
+		});
+
+	}
+
 	private void setAccountName(String selectedAccountName) {
 		authentication_account = selectedAccountName;
+		auth_account.setText(authentication_account);
 	}
 
 	public static String getCurr_log_file_base_name() {
@@ -179,8 +221,8 @@ public class CloudFileUpload extends Activity {
 	}
 
 	public static void setCurr_log_file_base_name(String curr_log_file_base_name) {
-		CloudFileUpload.curr_log_file_base_name = curr_log_file_base_name;
-		fileTitle.setText(curr_log_file_base_name + " " + authentication_account);
+		CloudFileUploadActivity.curr_log_file_base_name = curr_log_file_base_name;
+		file_title.setText(curr_log_file_base_name);
 	}
 
 	public static String getLast_log_file_base_name() {
@@ -188,8 +230,37 @@ public class CloudFileUpload extends Activity {
 	}
 
 	public static void setLast_log_file_base_name(String last_log_file_base_name) {
-		CloudFileUpload.last_log_file_base_name = last_log_file_base_name;
+		CloudFileUploadActivity.last_log_file_base_name = last_log_file_base_name;
+	}
+
+	private void generateFileSelectDialog() {
+		// Build SelectFiles fragment for selecting files
+		SelectFilesFragment selectFiles = new SelectFilesFragment();
+		// bundle to send to select file fragment storing file arraylist
+		Bundle listBundle = new Bundle();
+		// add arrayList to bundle
+		listBundle.putStringArrayList(LIST_KEY, new ArrayList<String>(
+				getLogFileList()));
+		// set bundle to dialog fragment argument
+		selectFiles.setArguments(listBundle);
+		// show dialog fragment
+		selectFiles.show(getFragmentManager(), "dialog");
+	}
+
+	public void selectFile(View v) {
+		
+		String oldRC = (String)resp_code.getText();
+		String oldContent = (String)resp_content.getText(); 
+		generateFileSelectDialog();
+		resp_code.setText(NEW_UPLOAD);
+		resp_content.setText(NEW_UPLOAD);
+		
 	}
 	
+	public void selectAccount(View v) {
+		Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+				new String[] { "com.google" }, false, null, null, null, null);
+		startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
+	}
 
 }

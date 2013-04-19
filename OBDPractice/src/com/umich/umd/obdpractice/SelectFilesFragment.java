@@ -36,7 +36,7 @@ public class SelectFilesFragment extends DialogFragment{
 				Log.d(DEBUG_TAG, "File Index " + fileIndex);
 				String fileName = fileList.get(which);
 				Log.d(DEBUG_TAG, "File Name: " + fileName);
-				CloudFileUpload.setCurr_log_file_base_name(fileName);
+				CloudFileUploadActivity.setCurr_log_file_base_name(fileName);
 				
 			}
 		});

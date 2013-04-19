@@ -2,23 +2,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CloudFileUpload" >
+    tools:context=".CloudFileUploadActivity" >
 
     <TextView
         android:id="@+id/cloud_file_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:text="@string/filename" />
-    
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="@string/filename"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/auth_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cloud_file_name"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/auth_account_name"
+        android:textSize="15sp" />
+
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/upload_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/cloud_file_name"
+        android:layout_below="@id/auth_account"
         android:onClick="uploadFile"
         android:text="@string/uploadSelectedFile" />
+
+    <TextView
+        android:id="@+id/resp_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/upload_button"
+        android:layout_margin="10dp"
+        android:text="@string/resp_label_text" />
+
+    <TextView
+        android:id="@+id/resp_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/upload_button"
+        android:layout_margin="10dp"
+        android:layout_marginTop="@id/resp_label"
+        android:layout_toRightOf="@+id/resp_label"
+        android:text="@string/resp_text" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@id/resp_label"
+        android:background="@android:color/darker_gray"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/resp_content_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resp_label"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/resp_content_label_text" />
+
+    <TextView
+        android:id="@+id/resp_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/select_file"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/resp_content_label"
+        android:text="@string/resp_content_text" />
+
+    <Button
+        android:id="@+id/select_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/list_logfiles"
+        android:onClick="selectFile"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/select_acct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/select_acct_text"
+        android:onClick="selectAccount"
+        android:textSize="12sp" />
 
 </RelativeLayout>

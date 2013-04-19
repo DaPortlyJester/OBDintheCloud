@@ -129,27 +129,38 @@ containing a value of this type.
         public static final int zOrderOnTop=0x7f01000d;
     }
     public static final class drawable {
-        public static final int dg_tech=0x7f020000;
+        public static final int block_umich_cecs=0x7f020000;
+        public static final int dg_tech=0x7f020001;
+        public static final int umich_icon=0x7f020002;
     }
     public static final class id {
-        public static final int button1=0x7f040006;
-        public static final int cancel_button=0x7f040010;
+        public static final int auth_account=0x7f040006;
+        public static final int cancel_button=0x7f040019;
         public static final int cloud_file_name=0x7f040005;
-        public static final int fileText=0x7f040009;
-        public static final int file_name=0x7f04000d;
+        public static final int fileText=0x7f040012;
+        public static final int file_name=0x7f040016;
         public static final int hybrid=0x7f040004;
-        public static final int ipAddress=0x7f040007;
-        public static final int linearLayout1=0x7f04000a;
-        public static final int linearLayout3=0x7f04000b;
-        public static final int logfile_contents=0x7f04000e;
-        public static final int menu_settings=0x7f040011;
-        public static final int networkIP=0x7f040008;
+        public static final int imageView1=0x7f04000f;
+        public static final int ipAddress=0x7f040010;
+        public static final int linearLayout1=0x7f040013;
+        public static final int linearLayout3=0x7f040014;
+        public static final int logfile_contents=0x7f040017;
+        public static final int menu_settings=0x7f04001a;
+        public static final int networkIP=0x7f040011;
         public static final int none=0x7f040000;
         public static final int normal=0x7f040001;
-        public static final int regButton=0x7f04000c;
+        public static final int regButton=0x7f040015;
+        public static final int resp_code=0x7f040009;
+        public static final int resp_content=0x7f04000c;
+        public static final int resp_content_label=0x7f04000b;
+        public static final int resp_label=0x7f040008;
         public static final int satellite=0x7f040002;
-        public static final int select_logfiles=0x7f04000f;
+        public static final int select_acct=0x7f04000e;
+        public static final int select_file=0x7f04000d;
+        public static final int select_logfiles=0x7f040018;
+        public static final int separator=0x7f04000a;
         public static final int terrain=0x7f040003;
+        public static final int upload_button=0x7f040007;
     }
     public static final class layout {
         public static final int activity_cloud_file_upload=0x7f030000;
@@ -171,8 +182,9 @@ containing a value of this type.
         public static final int activity_view_stored_logs=0x7f070006;
     }
     public static final class string {
-        public static final int N_A=0x7f050032;
+        public static final int N_A=0x7f050033;
         public static final int app_name=0x7f050011;
+        public static final int auth_account_name=0x7f050036;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] 
          */
         public static final int auth_client_availability_notification_title=0x7f05000e;
@@ -244,29 +256,34 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f05000d;
         public static final int connect_cloud=0x7f050027;
-        public static final int download_button=0x7f05002e;
+        public static final int download_button=0x7f05002f;
         public static final int edit_message=0x7f050012;
         /**  Network Setup Screen Strings 
          */
-        public static final int enter_ip_adress=0x7f05002a;
-        public static final int fileContents=0x7f050030;
+        public static final int enter_ip_adress=0x7f05002b;
+        public static final int fileContents=0x7f050031;
         /**  View Log Files Strings 
          */
-        public static final int filename=0x7f05002f;
-        public static final int gryphon_log_filename=0x7f05002c;
+        public static final int filename=0x7f050030;
+        public static final int gryphon_log_filename=0x7f05002d;
         public static final int gryphon_monitor=0x7f050026;
         /**  Default Hello World Text 
          */
-        public static final int hello_world=0x7f050029;
-        public static final int ip_address=0x7f05002b;
-        public static final int list_button=0x7f05002d;
-        public static final int list_logfiles=0x7f050031;
+        public static final int hello_world=0x7f05002a;
+        public static final int ip_address=0x7f05002c;
+        public static final int list_button=0x7f05002e;
+        public static final int list_logfiles=0x7f050032;
         /**  Menu Strings 
          */
         public static final int menu_settings=0x7f050023;
         public static final int no=0x7f050014;
         public static final int ok=0x7f050016;
-        public static final int select_file=0x7f050033;
+        public static final int resp_content_label_text=0x7f050039;
+        public static final int resp_content_text=0x7f05003a;
+        public static final int resp_label_text=0x7f050037;
+        public static final int resp_text=0x7f050038;
+        public static final int select_acct_text=0x7f05003b;
+        public static final int select_file=0x7f050034;
         /**  Strings for Main Activity Buttons 
          */
         public static final int setup_network=0x7f050024;
@@ -282,9 +299,10 @@ containing a value of this type.
          */
         public static final int title_activity_read_log_files=0x7f050022;
         public static final int title_activity_view_stored_logs=0x7f050020;
+        public static final int umichDesc=0x7f050029;
         /**  Cloud File Upload Strings 
          */
-        public static final int uploadSelectedFile=0x7f050034;
+        public static final int uploadSelectedFile=0x7f050035;
         public static final int view_logs=0x7f050028;
         /**  Dialog Buttons Text 
          */

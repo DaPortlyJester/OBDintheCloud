@@ -6,8 +6,6 @@ Android Application for connecting to DG Technologies Gryphon and downloading st
 Implemented Functionality
 - Downloading Log Files from the Gryphon
 - Viewing log files downloaded from the Gryphon (limited capacity)
-
-Unimplemented Functionality
 - Uploading downloaded and parsed files to Google Cloud Storage
 
 Additional Features for the Future

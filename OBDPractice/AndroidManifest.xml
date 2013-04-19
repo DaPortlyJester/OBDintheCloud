@@ -40,7 +40,7 @@
         <activity android:label="@string/title_activity_read_log_files" android:name="com.umich.umd.obdpractice.ReadLogFiles" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
-        <activity android:label="@string/title_activity_cloud_file_upload" android:name="com.umich.umd.obdpractice.CloudFileUpload" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
+        <activity android:label="@string/title_activity_cloud_file_upload" android:name="com.umich.umd.obdpractice.CloudFileUploadActivity" android:parentActivityName="com.umich.umd.obdpractice.MainActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.umich.umd.obdpractice.MainActivity"/>
         </activity>
         <service android:name=".GCMIntentService"/>

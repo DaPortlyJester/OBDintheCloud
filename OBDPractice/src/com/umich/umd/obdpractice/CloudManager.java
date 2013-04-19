@@ -53,7 +53,7 @@ public class CloudManager {
 	/** Global instance of the JSON factory. */
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
-	protected CloudFileUpload cupActivity;
+	protected CloudFileUploadActivity cupActivity;
 	
 	/**
 	 * Constructor for sending Cloud authentication account information.
@@ -63,7 +63,7 @@ public class CloudManager {
 	 * @param authentication_account The string name of the account to authenticate with
 	 * 
 	 */
-	public CloudManager(CloudFileUpload cloudFileUpload, String authentication_account) {
+	public CloudManager(CloudFileUploadActivity cloudFileUpload, String authentication_account) {
 		cupActivity = cloudFileUpload;
 		if(!(authentication_account == null))
 			SERVICE_ACCOUNT_EMAIL = authentication_account;

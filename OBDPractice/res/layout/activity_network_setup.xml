@@ -31,7 +31,7 @@
     </EditText>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/upload_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -43,7 +43,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/upload_button"
         android:onClick="downloadFile"
         android:text="@string/download_button" />
 

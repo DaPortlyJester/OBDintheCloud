@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
 
 		if (manageConnect.networkConnected(getApplicationContext())) {
 
-			Intent intent = new Intent(this, CloudFileUpload.class);
+			Intent intent = new Intent(this, CloudFileUploadActivity.class);
 			startActivity(intent);
 		} else {
 			showAlert(DATA_ORIGIN);

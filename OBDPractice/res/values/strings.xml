@@ -37,6 +37,7 @@
     <string name="gryphon_monitor">Monitor Gryphon Output</string>
     <string name="connect_cloud">Upload Log Files to Google Cloud Platform</string>
     <string name="view_logs">View Stored Gryphon Logs</string>
+    <string name="umichDesc">University of Michigan - Dearborn College of Engineering and Computer Science</string>
 
     <!-- Default Hello World Text -->
     <string name="hello_world">Hello world!</string>
@@ -57,5 +58,11 @@
     
     <!-- Cloud File Upload Strings -->
     <string name="uploadSelectedFile">Upload Selected File</string>
+    <string name="auth_account_name">No Authorization Account Selected</string>
+    <string name="resp_label_text">Response Code:</string>
+    <string name="resp_text">Upload Not Intiated</string>
+    <string name="resp_content_label_text">Response Content</string>
+    <string name="resp_content_text">Upload Not Initiated</string>
+    <string name="select_acct_text">Select Account</string>
 
 </resources>

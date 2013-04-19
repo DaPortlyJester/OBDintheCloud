@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.http.HttpResponse;
@@ -82,9 +84,9 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 	 */
 
 	private final Context cloudContext;
-	private final CloudFileUpload cupActivity;
+	private final CloudFileUploadActivity cupActivity;
 
-	public PutHTTPTask(CloudFileUpload cupAct, Context cloudActContext,
+	public PutHTTPTask(CloudFileUploadActivity cupAct, Context cloudActContext,
 			String authenticationEmail) {
 		super();
 		SERVICE_ACCOUNT_EMAIL = authenticationEmail;
@@ -104,6 +106,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 				e.printStackTrace();
 			}
 		}
+		//cupActivity.updateDisplay(output);
 		return output;
 	}
 
@@ -275,6 +278,8 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 			int respCode = httpConnection.getResponseCode();
 			Log.i("GCS_RC", "" + respCode);
 			if (respCode == 200) {
+				onSuccess(""+respCode);
+				getHeaders(httpConnection.getHeaderFields());
 				// Get URLConnection input stream
 				InputStream is = httpConnection.getInputStream();
 				// Use thread-safe string buffer to build response
@@ -284,6 +289,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 				String s = "";
 				while ((s = buffer.readLine()) != null)
 					responseString.append(s + "\n");
+				Log.d(DEBUG_TAG, "Response: " + responseString.toString());
 				return responseString.toString();
 			} else if (respCode == 401) {
 				GoogleAuthUtil.invalidateToken(cupActivity, token);
@@ -292,6 +298,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 						+ httpConnection.getResponseMessage());
 				return null;
 			} else {
+				onError("Server returned code: " + respCode,null);
 				Log.e(DEBUG_TAG, "Server returned the following error code: "
 						+ respCode);
 				Log.e(DEBUG_TAG, "Connection Error: "
@@ -335,6 +342,13 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 
 	}
 
+	private void getHeaders(Map<String, List<String>> headerFields) {
+		
+		cupActivity.updateDisplay(headerFields);
+		
+	}
+
+	
 	/**
 	 * Grab Google OAuth 2.0 Authentication token using Google Play Services API
 	 * for Google Cloud Storage
@@ -381,6 +395,10 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 		}
 		cupActivity.show(msg); // will be run in UI thread
 	}
+	
+	protected void onSuccess(String respCode){
+		cupActivity.show(respCode);
+	}
 
 	/**
 	 * Note: Make sure that the receiver can be called from outside the app. You
@@ -392,7 +410,7 @@ public class PutHTTPTask extends AsyncTask<String, Void, String> {
 		@Override
 		public void onReceive(Context context, Intent callback) {
 			Bundle extras = callback.getExtras();
-			Intent intent = new Intent(context, CloudFileUpload.class);
+			Intent intent = new Intent(context, CloudFileUploadActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.putExtras(extras);
 			Log.i(TAG, "Received broadcast. Resurrecting activity");
